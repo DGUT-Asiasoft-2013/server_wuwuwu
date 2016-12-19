@@ -52,7 +52,7 @@ public class APIController {
 	public User register(
 			@RequestParam String account,
 			@RequestParam String passwordHash,
-			@RequestParam String email,
+			@RequestParam String phonenumber,
 			@RequestParam String name,
 			MultipartFile avatar,
 			HttpServletRequest request){
@@ -60,7 +60,7 @@ public class APIController {
 		User user = new User();
 		user.setAccount(account);
 		user.setPasswordHash(passwordHash);
-		user.setEmail(email);
+		user.setPhonenumber(phonenumber);
 		user.setName(name);
 
 		if(avatar!=null){
