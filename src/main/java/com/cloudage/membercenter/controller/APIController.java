@@ -52,16 +52,16 @@ public class APIController {
 	public User register(
 			@RequestParam String account,
 			@RequestParam String passwordHash,
-			@RequestParam String phonenumber,
-			@RequestParam String name,
+			@RequestParam String telephone,
+			@RequestParam String nickname,
 			MultipartFile avatar,
 			HttpServletRequest request){
 
 		User user = new User();
 		user.setAccount(account);
 		user.setPasswordHash(passwordHash);
-		user.setPhonenumber(phonenumber);
-		user.setName(name);
+		user.setTelephone(telephone);
+		user.setNickname(nickname);
 
 		if(avatar!=null){
 			try{
@@ -101,10 +101,10 @@ public class APIController {
 
 	@RequestMapping(value="/passwordrecover", method=RequestMethod.POST)
 	public boolean resetPassword(
-			@RequestParam String email,
+			@RequestParam String telephone,
 			@RequestParam String passwordHash
 			){
-		User user = userService.findByEmail(email);
+		User user = userService.findByTelephone(telephone);
 		if(user==null){
 			return false;
 		}else{
