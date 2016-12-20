@@ -101,10 +101,10 @@ public class APIController {
 
 	@RequestMapping(value="/passwordrecover", method=RequestMethod.POST)
 	public boolean resetPassword(
-			@RequestParam String email,
+			@RequestParam String telephone,
 			@RequestParam String passwordHash
 			){
-		User user = userService.findByEmail(email);
+		User user = userService.findBytelephone(telephone);
 		if(user==null){
 			return false;
 		}else{
