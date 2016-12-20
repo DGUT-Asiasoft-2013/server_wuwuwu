@@ -3,48 +3,54 @@ package com.cloudage.membercenter.entity;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import com.cloudage.membercenter.util.DateRecord;
+import com.cloudage.membercenter.util.BaseEntity;
 
 @Entity
-public class Commodity extends DateRecord{
+public class Commodity extends BaseEntity{
 	User user;
-	String name;         //商品名称
-	String price;        //商品价格
-	String describe;     //商品描述
-	String image;        //商品图片
+	String CommName;         //商品名称
+	String CommPrice;        //商品价格
+	int CommNumber;          //商品数量
+	String CommDescribe;     //商品描述
+	String CommImage;        //商品图片
+	            
 	
-	@ManyToOne(optional=false)
+	public int getCommNumber() {
+		return CommNumber;
+	}
+	public void setCommNumber(int commNumber) {
+		CommNumber = commNumber;
+	}
+	@ManyToOne
 	public User getUser() {
 		return user;
 	}
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public String getName() {
-		return name;
+	public String getCommName() {
+		return CommName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setCommName(String commName) {
+		CommName = commName;
 	}
-	public String getPrice() {
-		return price;
+	public String getCommPrice() {
+		return CommPrice;
 	}
-	public void setPrice(String price) {
-		this.price = price;
+	public void setCommPrice(String commPrice) {
+		CommPrice = commPrice;
 	}
-	public String getDescribe() {
-		return describe;
+	public String getCommDescribe() {
+		return CommDescribe;
 	}
-	public void setDescribe(String describe) {
-		this.describe = describe;
+	public void setCommDescribe(String commPescribe) {
+		CommDescribe = commPescribe;
 	}
-	public String getImage() {
-		return image;
+	public String getCommImage() {
+		return CommImage;
 	}
-	public void setImage(String image) {
-		this.image = image;
+	public void setCommImage(String commImage) {
+		CommImage = commImage;
 	}
-
-	
 	
 }
