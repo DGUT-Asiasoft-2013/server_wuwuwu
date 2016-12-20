@@ -13,7 +13,7 @@ public class Commodity extends BaseEntity{
 	int CommNumber;          //商品数量
 	String CommDescribe;     //商品描述
 	String CommImage;        //商品图片
-     
+    //test
 	            
 	
 	public int getCommNumber() {
