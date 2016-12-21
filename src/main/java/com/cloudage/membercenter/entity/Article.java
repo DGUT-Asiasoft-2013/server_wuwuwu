@@ -27,7 +27,7 @@ public class Article extends BaseEntity {
 	String text;
 	
 	@ManyToOne(optional=false)
-	@JsonIgnore
+	@JsonIgnore//加上这个当从后台推数据到前台是会忽略掉user这个属性
 	public User getAuthor() {
 		return author;
 	}

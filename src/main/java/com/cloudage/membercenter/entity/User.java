@@ -13,12 +13,12 @@ public class User extends BaseEntity{
 	String email;
 	String avatar;
 	
-	@Column(unique=true)
+	@Column(unique=true)//该字段是否为唯一标识
 	public String getAccount() {
 		return account;
 	}
 	
-	@Column(nullable=false)
+	@Column(nullable=false)//是否能为空
 	public String getPasswordHash() {
 		return passwordHash;
 	}
