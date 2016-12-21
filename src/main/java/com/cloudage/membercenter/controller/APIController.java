@@ -1,24 +1,5 @@
 package com.cloudage.membercenter.controller;
 
-import java.io.File;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.io.FileUtils;
-import org.junit.runners.Parameterized.Parameters;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor;
-
 import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Collections;
 import com.cloudage.membercenter.entity.Comment;
@@ -30,6 +11,16 @@ import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.ICommodityService;
 import com.cloudage.membercenter.service.ILikesService;
 import com.cloudage.membercenter.service.IUserService;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -66,7 +57,8 @@ public class APIController {
 			@RequestParam String account,
 			@RequestParam String passwordHash,
 			@RequestParam String telephone,
-			@RequestParam String name,
+			@RequestParam String nickname,
+
 			MultipartFile avatar,
 			HttpServletRequest request){
 
@@ -74,7 +66,8 @@ public class APIController {
 		user.setAccount(account);
 		user.setPasswordHash(passwordHash);
 		user.setTelephone(telephone);
-		user.setNickname(name);
+		user.setNickname(nickname);
+
 
 		if(avatar!=null){
 			try{
@@ -117,7 +110,7 @@ public class APIController {
 			@RequestParam String telephone,
 			@RequestParam String passwordHash
 			){
-		User user = userService.findBytelephone(telephone);
+		User user = userService.findByTelephone(telephone);
 		if(user==null){
 			return false;
 		}else{
