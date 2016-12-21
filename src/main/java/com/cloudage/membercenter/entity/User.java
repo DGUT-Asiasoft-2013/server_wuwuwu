@@ -9,8 +9,8 @@ import com.cloudage.membercenter.util.BaseEntity;
 public class User extends BaseEntity{
 	String account;
 	String passwordHash;
-	String name;
-	String email;
+	String nickname;
+	String telephone;
 	String avatar;
 	
 	@Column(unique=true)//该字段是否为唯一标识
@@ -24,33 +24,37 @@ public class User extends BaseEntity{
 	}
 	
 	@Column(unique=true)
-	public String getName() {
-		return name;
+	public String getNickname() {
+		return nickname;
 	}
 	
 	@Column(nullable=true)
 	public String getAvatar() {
 		return avatar;
 	}
-	
+
 	@Column(nullable=false,unique=true)
-	public String getEmail() {
-		return email;
+	public String getTelephone() {
+		return telephone;
 	}
-	
-	public void setEmail(String email) {
-		this.email = email;
-	}
+
 	public void setAccount(String account) {
 		this.account = account;
 	}
+	
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
 	}
-	public void setName(String name) {
-		this.name = name;
+	
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
+	
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+	
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 }
