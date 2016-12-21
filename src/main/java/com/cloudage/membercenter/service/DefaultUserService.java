@@ -30,17 +30,15 @@ public class DefaultUserService implements IUserService {
 	}
 
 	@Override
-	public User findBytelephone(String telephone) {
-		// TODO Auto-generated method stub
-		return userRepo.findUserBytelephone(telephone);
+	public User findByTelephone(String telephone){
+		return userRepo.findUserByTelephone(telephone);
 	}
-
+	
+	
 	@Override
 	public User findById(Integer id) {
 		// TODO Auto-generated method stub
 		return userRepo.findOne(id);
 	}
-
-
 	
 }

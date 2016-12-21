@@ -1,10 +1,14 @@
 package com.cloudage.membercenter.controller;
 
 import com.cloudage.membercenter.entity.Article;
+import com.cloudage.membercenter.entity.Collections;
 import com.cloudage.membercenter.entity.Comment;
+import com.cloudage.membercenter.entity.Commodity;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IArticleService;
+import com.cloudage.membercenter.service.ICollectionsService;
 import com.cloudage.membercenter.service.ICommentService;
+import com.cloudage.membercenter.service.ICommodityService;
 import com.cloudage.membercenter.service.ILikesService;
 import com.cloudage.membercenter.service.IUserService;
 import org.apache.commons.io.FileUtils;
@@ -24,6 +28,15 @@ public class APIController {
 
 	@Autowired
 	IUserService userService;
+	
+	@Autowired
+	ICommodityService commodityService;
+	
+	@Autowired
+	ICollectionsService collectionsService;
+	
+	
+	
 
 	@Autowired
 	IArticleService articleService;
@@ -44,7 +57,8 @@ public class APIController {
 			@RequestParam String account,
 			@RequestParam String passwordHash,
 			@RequestParam String telephone,
-			@RequestParam String name,
+			@RequestParam String nickname,
+
 			MultipartFile avatar,
 			HttpServletRequest request){
 
@@ -52,7 +66,8 @@ public class APIController {
 		user.setAccount(account);
 		user.setPasswordHash(passwordHash);
 		user.setTelephone(telephone);
-		user.setNickname(name);
+		user.setNickname(nickname);
+
 
 		if(avatar!=null){
 			try{
@@ -95,7 +110,7 @@ public class APIController {
 			@RequestParam String telephone,
 			@RequestParam String passwordHash
 			){
-		User user = userService.findBytelephone(telephone);
+		User user = userService.findByTelephone(telephone);
 		if(user==null){
 			return false;
 		}else{
@@ -192,4 +207,65 @@ public class APIController {
 		
 		return likesService.countLikes(article_id);
 	}
+
+//	收藏数量
+	@RequestMapping("/commodity/{commodity_id}/collect")
+	public int countCollections(@PathVariable int commodity_id){
+		return collectionsService.countCollections(commodity_id);
+	}
+	
+	
+//	是否已收藏
+	@RequestMapping("/commodity/{commodity_id}/iscollected")
+	public boolean checkCollected(@PathVariable int commodity_id,HttpServletRequest request){
+		User me = getCurrentUser(request);
+		return collectionsService.checkCollectioned(me.getId(), commodity_id);
+	}
+	
+	
+	
+//搜索
+	@RequestMapping("commodity/s/{keyword}")
+	 	public Page<Commodity> searchCommodtyWithKeyword(
+	 			@PathVariable String keyword,
+	 			@RequestParam(defaultValue = "0") int page
+	 			){
+	 		return commodityService.searchCommodtyWithKeyword(keyword,page);
+	 	}
+//	收藏
+	@RequestMapping(value="/commodity/{commodity_id}/collect",method = RequestMethod.POST)
+	public int changeCollects(
+			@PathVariable int commodity_id,
+			@RequestParam boolean collect,
+			HttpServletRequest request
+			){
+		User me = getCurrentUser(request);
+		Commodity commodity = commodityService.findOne(commodity_id);
+
+		if(collect)
+			collectionsService.addCollection(me, commodity);
+		else
+			collectionsService.removeCollection(me, commodity);
+		
+		return collectionsService.countCollections(commodity_id);
+	}
+	
+	@RequestMapping(value="/collections")
+	 	public Page<Collections> getMyComments(
+	 			HttpServletRequest request
+	 			){
+//	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),0);
+	 		
+
+	 		return collectionsService.getMyCollections(44,0);
+	 	}
+	 	
+	 	@RequestMapping(value="/collections/{page}")
+	 	public Page<Collections> getMycollections(
+	 			@PathVariable int page,
+	 			HttpServletRequest request
+	 			){
+	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),page);
+	 	}
+
 }
