@@ -13,6 +13,7 @@ public interface IUserRepository extends PagingAndSortingRepository<User, Intege
 	User findUserByAccount(String account);
 	
 	@Query("from User u where u.telephone = ?1")
-	User findUserBytelephone(String telephone);
+	User findUserByTelephone(String telephone);
+
 	
 }

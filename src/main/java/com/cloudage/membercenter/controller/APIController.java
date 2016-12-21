@@ -66,7 +66,8 @@ public class APIController {
 			@RequestParam String account,
 			@RequestParam String passwordHash,
 			@RequestParam String telephone,
-			@RequestParam String name,
+			@RequestParam String nickname,
+
 			MultipartFile avatar,
 			HttpServletRequest request){
 
@@ -74,7 +75,8 @@ public class APIController {
 		user.setAccount(account);
 		user.setPasswordHash(passwordHash);
 		user.setTelephone(telephone);
-		user.setNickname(name);
+		user.setNickname(nickname);
+
 
 		if(avatar!=null){
 			try{
@@ -117,7 +119,7 @@ public class APIController {
 			@RequestParam String telephone,
 			@RequestParam String passwordHash
 			){
-		User user = userService.findBytelephone(telephone);
+		User user = userService.findByTelephone(telephone);
 		if(user==null){
 			return false;
 		}else{
