@@ -4,9 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import com.cloudage.membercenter.util.BaseEntity;
+import com.cloudage.membercenter.util.DateRecord;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Commodity extends BaseEntity{
+public class Commodity extends DateRecord{
 	User user;
 	String CommName;         //商品名称
 	String CommPrice;        //商品价格
@@ -23,6 +25,7 @@ public class Commodity extends BaseEntity{
 		CommNumber = commNumber;
 	}
 	@ManyToOne
+	@JsonIgnore
 	public User getUser() {
 		return user;
 	}
