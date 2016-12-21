@@ -1,5 +1,7 @@
 package com.cloudage.membercenter.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,11 +20,32 @@ public class RootController {
 	IAdminService adminService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index(ModelMap model){
-		model.addAttribute("message","Member Center Index");
-		return "index";
+	public String index(ModelMap model,HttpServletRequest request){
+		return "redirect:/staff";
 	}
 	
+	@RequestMapping("/staff")
+	public String staff(ModelMap model){
+		return "staff";
+	}
+	
+	
+	
+	@RequestMapping("/users")
+	public String users(ModelMap model){
+		return "users";
+	}
+	
+	
+	@RequestMapping("/commodity")
+	public String commodity(){
+		return "commodity";
+	}
+	
+	@RequestMapping("/collections")
+	public String collections(){
+		return "collections";
+	}
 //	@RequestMapping("/greeting")
 //    public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
 //        model.addAttribute("name", name);
