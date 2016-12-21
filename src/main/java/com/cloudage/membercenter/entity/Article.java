@@ -15,8 +15,6 @@ import javax.persistence.Transient;
 
 import com.cloudage.membercenter.util.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
 public class Article extends BaseEntity {
 	
 	User author;
