@@ -54,6 +54,7 @@ public class APIController {
 			@RequestParam String passwordHash,
 			@RequestParam String telephone,
 			@RequestParam String nickname,
+
 			MultipartFile avatar,
 			HttpServletRequest request){
 
@@ -62,6 +63,7 @@ public class APIController {
 		user.setPasswordHash(passwordHash);
 		user.setTelephone(telephone);
 		user.setNickname(nickname);
+
 
 		if(avatar!=null){
 			try{

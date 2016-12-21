@@ -14,5 +14,6 @@ public interface IUserRepository extends PagingAndSortingRepository<User, Intege
 	
 	@Query("from User u where u.telephone = ?1")
 	User findUserByTelephone(String telephone);
+
 	
 }
