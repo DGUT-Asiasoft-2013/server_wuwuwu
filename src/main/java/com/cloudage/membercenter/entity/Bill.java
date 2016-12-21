@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 /**
@@ -15,6 +16,7 @@ public class Bill extends DateRecord {
     User user;
     Commodity commodity;
 
+    @ManyToOne(optional = false)
     public Commodity getCommodity() {
         return commodity;
     }
@@ -34,8 +36,4 @@ public class Bill extends DateRecord {
         this.user = user;
     }
 
-    @Transient
-    public int getUserId() {
-        return user.getId();
-    }
 }

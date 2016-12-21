@@ -1,7 +1,6 @@
 package com.cloudage.membercenter.repository;
 
 import com.cloudage.membercenter.entity.Bill;
-import com.cloudage.membercenter.entity.Wallet;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

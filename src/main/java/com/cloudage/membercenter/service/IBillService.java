@@ -1,7 +1,6 @@
 package com.cloudage.membercenter.service;
 
 import com.cloudage.membercenter.entity.Bill;
-import com.cloudage.membercenter.entity.Wallet;
 import org.springframework.data.domain.Page;
 
 /**
