@@ -32,8 +32,8 @@ import com.cloudage.membercenter.service.ILikesService;
 import com.cloudage.membercenter.service.IUserService;
 
 @RestController
-@RequestMapping("/api")
-public class APIController {
+@RequestMapping("/cs")
+public class APICollectAndSearchController {
 
 	@Autowired
 	IUserService userService;

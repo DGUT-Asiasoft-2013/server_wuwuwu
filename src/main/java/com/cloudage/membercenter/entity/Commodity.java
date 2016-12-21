@@ -25,7 +25,6 @@ public class Commodity extends DateRecord{
 		CommNumber = commNumber;
 	}
 	@ManyToOne
-	@JsonIgnore
 	public User getUser() {
 		return user;
 	}
