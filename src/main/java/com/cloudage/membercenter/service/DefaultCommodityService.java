@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cloudage.membercenter.entity.Commodity;
+import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.ICommodityRepository;
 
 @Component
@@ -21,13 +22,13 @@ public class DefaultCommodityService implements ICommodityService{
 	@Autowired
 	ICommodityRepository commodityRepo;
 
-	
-//	搜索
+
+	//	搜索
 	@Override
 	public Page<Commodity> searchCommodtyWithKeyword(String keyword, int page) {
 		Sort sort = new Sort(Direction.DESC,"createDate");
-		 		PageRequest pageRequest = new PageRequest(page, 10, sort);
-		 		return commodityRepo.searchCommodityWithKeyword(keyword, pageRequest);
+		PageRequest pageRequest = new PageRequest(page, 10, sort);
+		return commodityRepo.searchCommodityWithKeyword(keyword, pageRequest);
 	}
 
 
@@ -41,6 +42,23 @@ public class DefaultCommodityService implements ICommodityService{
 	public Commodity save(Commodity commodity) {
 		// TODO Auto-generated method stub
 		return commodityRepo.save(commodity);
+	}
+
+
+
+
+
+	@Override
+	public List<Commodity> findAllByUser(User user) {
+		// TODO Auto-generated method stub
+		return commodityRepo.findAllByUser(user);
+	}
+
+
+	@Override
+	public List<Commodity> findAllByUserId(Integer userId) {
+		// TODO Auto-generated method stub
+		return commodityRepo.findAllByUserId(userId);
 	}
 
 

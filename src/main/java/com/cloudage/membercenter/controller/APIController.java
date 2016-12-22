@@ -273,16 +273,16 @@ public class APIController {
 
 
 
-	//	@RequestMapping(value="/commodity/{userId}")
-	//	public List<Commodity> getCommodityByUserID(@PathVariable Integer userId){
-	//		return commodityService.findAllByuserId(userId);
-	//	}
+	@RequestMapping(value="/commodity/{userId}")
+	public List<Commodity> getCommodityByUserID(@PathVariable Integer userId){
+		return commodityService.findAllByUserId(userId);
+	}
 
 	//发布
 	@RequestMapping(value = "/commodity",method = RequestMethod.POST)
 	public Commodity addCommodity(
 			@RequestParam String CommName,
-			@RequestParam String Commprice,
+			@RequestParam String CommPrice,
 			@RequestParam int CommNumber,
 			@RequestParam String CommDescrible,
 			MultipartFile CommImage,
@@ -291,7 +291,7 @@ public class APIController {
 		Commodity commodity = new Commodity();
 		commodity.setUser(currentuser);
 		commodity.setCommName(CommName);
-		commodity.setCommPrice(Commprice);
+		commodity.setCommPrice(CommPrice);
 		commodity.setCommNumber(CommNumber);
 		commodity.setCommDescribe(CommDescrible);
 
