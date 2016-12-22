@@ -19,13 +19,23 @@ public class DefaultCommodity implements ICommodityService{
 	@Autowired
 	ICommodityRepository commodityRepo;
 
-	
-//	搜索
+
+	//	搜索
 	@Override
-	public Page<Commodity> searchCommodtyWithKeyword(String keyword, int page) {
-		Sort sort = new Sort(Direction.DESC,"createDate");
-		 		PageRequest pageRequest = new PageRequest(page, 10, sort);
-		 		return commodityRepo.searchCommodityWithKeyword(keyword, pageRequest);
+	public Page<Commodity> searchCommodtyWithKeyword(String keyword, int page,String howsort) {
+		Sort sort;
+		if(howsort.equals("time")){
+			sort = new Sort(Direction.DESC,"createDate");
+		}else if(howsort.equals("highprice")){
+			sort = new Sort(Direction.DESC,"commPrice");
+		}else if(howsort.equals("lowprice")){
+			sort = new Sort(Direction.ASC,"commPrice");
+		}else{
+			sort = new Sort(Direction.DESC,"createDate");
+		}
+
+		PageRequest pageRequest = new PageRequest(page, 10, sort);
+		return commodityRepo.searchCommodityWithKeyword(keyword, pageRequest);
 	}
 
 

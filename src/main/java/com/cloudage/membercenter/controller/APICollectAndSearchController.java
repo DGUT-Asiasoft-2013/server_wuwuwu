@@ -117,7 +117,7 @@ public class APICollectAndSearchController {
 			@RequestParam String telephone,
 			@RequestParam String passwordHash
 			){
-		User user = userService.findBytelephone(telephone);
+		User user = userService.findByTelephone(telephone);
 		if(user==null){
 			return false;
 		}else{
@@ -232,12 +232,14 @@ public class APICollectAndSearchController {
 	
 	
 //搜索
-	@RequestMapping("commodity/s/{keyword}")
+	@RequestMapping("commodity/s/{keyword}/{howsort}")
 	 	public Page<Commodity> searchCommodtyWithKeyword(
 	 			@PathVariable String keyword,
+	 			@PathVariable String howsort,
 	 			@RequestParam(defaultValue = "0") int page
+	 			
 	 			){
-	 		return commodityService.searchCommodtyWithKeyword(keyword,page);
+	 		return commodityService.searchCommodtyWithKeyword(keyword,page,howsort);
 	 	}
 //	收藏
 	@RequestMapping(value="/commodity/{commodity_id}/collect",method = RequestMethod.POST)
@@ -261,10 +263,8 @@ public class APICollectAndSearchController {
 	 	public Page<Collections> getMyComments(
 	 			HttpServletRequest request
 	 			){
-//	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),0);
-	 		
+	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),0);
 
-	 		return collectionsService.getMyCollections(44,0);
 	 	}
 	 	
 	 	@RequestMapping(value="/collections/{page}")
