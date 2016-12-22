@@ -13,6 +13,7 @@ public class User extends BaseEntity{
 	String nickname;
 	String telephone;
 	String avatar;
+	String address;
 	Integer money;
 
 	@ColumnDefault("0")
@@ -68,5 +69,14 @@ public class User extends BaseEntity{
 	
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+	
+	@Column(nullable=false)//是否能为空
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 }
