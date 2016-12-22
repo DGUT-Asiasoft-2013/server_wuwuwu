@@ -12,7 +12,7 @@ public class DateRecord extends BaseEntity {
 	Date createDate;
 	Date editDate;
 
-	@Column(updatable=false)
+	@Column(updatable=false)//插入数据是是否更新该字段
 	public Date getCreateDate() {
 		return createDate;
 	}
