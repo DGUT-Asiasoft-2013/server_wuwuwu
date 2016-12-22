@@ -7,7 +7,7 @@ import com.cloudage.membercenter.util.BaseEntity;
 import com.cloudage.membercenter.util.DateRecord;
 
 @Entity
-public class Commodity extends DateRecord{
+public class Commodity extends BaseEntity{
 	User user;
 	String CommName;         //商品名称
 	String CommPrice;        //商品价格
@@ -15,12 +15,7 @@ public class Commodity extends DateRecord{
 	String CommDescribe;     //商品描述
 	String CommImage;        //商品图片
 
-	public int getCommNumber() {
-		return CommNumber;
-	}
-	public void setCommNumber(int commNumber) {
-		CommNumber = commNumber;
-	}
+
 	@ManyToOne
 	public User getUser() {
 		return user;
@@ -51,6 +46,13 @@ public class Commodity extends DateRecord{
 	}
 	public void setCommImage(String commImage) {
 		CommImage = commImage;
+	}
+	
+	public int getCommNumber() {
+		return CommNumber;
+	}
+	public void setCommNumber(int commNumber) {
+		CommNumber = commNumber;
 	}
 	
 }

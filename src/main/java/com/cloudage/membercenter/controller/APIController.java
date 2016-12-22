@@ -28,15 +28,14 @@ public class APIController {
 
 	@Autowired
 	IUserService userService;
-	
+
 	@Autowired
 	ICommodityService commodityService;
-	
+
 	@Autowired
 	ICollectionsService collectionsService;
-	
-	
-	
+
+
 
 	@Autowired
 	IArticleService articleService;
@@ -46,6 +45,7 @@ public class APIController {
 
 	@Autowired
 	ILikesService likesService;
+
 
 	@RequestMapping(value = "/hello", method=RequestMethod.GET)
 	public @ResponseBody String hello(){
@@ -58,6 +58,7 @@ public class APIController {
 			@RequestParam String passwordHash,
 			@RequestParam String telephone,
 			@RequestParam String nickname,
+			@RequestParam String address,
 
 			MultipartFile avatar,
 			HttpServletRequest request){
@@ -67,6 +68,7 @@ public class APIController {
 		user.setPasswordHash(passwordHash);
 		user.setTelephone(telephone);
 		user.setNickname(nickname);
+		user.setAddress(address);
 
 
 		if(avatar!=null){
@@ -184,7 +186,7 @@ public class APIController {
 	public int countLikes(@PathVariable int article_id){
 		return likesService.countLikes(article_id);
 	}
-	
+
 	@RequestMapping("/article/{article_id}/isliked")
 	public boolean checkLiked(@PathVariable int article_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
@@ -204,7 +206,106 @@ public class APIController {
 			likesService.addLike(me, article);
 		else
 			likesService.removeLike(me, article);
-		
+
 		return likesService.countLikes(article_id);
 	}
+
+
+
+	@RequestMapping("/commodity/{commodity_id}/collect")
+	public int countCollections(@PathVariable int commodity_id){
+		return collectionsService.countCollections(commodity_id);
+	}
+
+
+
+	@RequestMapping("/commodity/{commodity_id}/iscollected")
+	public boolean checkCollected(@PathVariable int commodity_id,HttpServletRequest request){
+		User me = getCurrentUser(request);
+		return collectionsService.checkCollectioned(me.getId(), commodity_id);
+	}
+
+
+
+
+
+
+	@RequestMapping(value="/commodity/{commodity_id}/collect",method = RequestMethod.POST)
+	public int changeCollects(
+			@PathVariable int commodity_id,
+			@RequestParam boolean collect,
+			HttpServletRequest request
+			){
+		User me = getCurrentUser(request);
+		Commodity commodity = commodityService.findOne(commodity_id);
+
+		if(collect)
+			collectionsService.addCollection(me, commodity);
+		else
+			collectionsService.removeCollection(me, commodity);
+
+		return collectionsService.countCollections(commodity_id);
+	}
+
+	@RequestMapping(value="/collections")
+	public Page<Collections> getMyComments(
+			HttpServletRequest request
+			){
+		//	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),0);
+
+
+		return collectionsService.getMyCollections(44,0);
+	}
+
+	@RequestMapping(value="/collections/{page}")
+	public Page<Collections> getMycollections(
+			@PathVariable int page,
+			HttpServletRequest request
+			){
+		return collectionsService.getMyCollections(getCurrentUser(request).getId(),page);
+	}
+
+
+
+
+	//	@RequestMapping(value="/commodity/{userId}")
+	//	public List<Commodity> getCommodityByUserID(@PathVariable Integer userId){
+	//		return commodityService.findAllByuserId(userId);
+	//	}
+
+	//发布
+	@RequestMapping(value = "/commodity",method = RequestMethod.POST)
+	public Commodity addCommodity(
+			@RequestParam String CommName,
+			@RequestParam String Commprice,
+			@RequestParam int CommNumber,
+			@RequestParam String CommDescrible,
+			MultipartFile CommImage,
+			HttpServletRequest request){
+		User currentuser = getCurrentUser(request);
+		Commodity commodity = new Commodity();
+		commodity.setUser(currentuser);
+		commodity.setCommName(CommName);
+		commodity.setCommPrice(Commprice);
+		commodity.setCommNumber(CommNumber);
+		commodity.setCommDescribe(CommDescrible);
+
+
+		if(CommImage!=null){
+			try{
+				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/commodity");
+				FileUtils.copyInputStreamToFile(CommImage.getInputStream(), new File(realPath,CommImage+".png"));
+				commodity.setCommImage("commodity/"+CommName+".png");
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return commodityService.save(commodity);
+
+
+	}
+
+
+
 }

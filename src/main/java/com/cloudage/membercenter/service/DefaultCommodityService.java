@@ -1,5 +1,7 @@
 package com.cloudage.membercenter.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,12 +17,12 @@ import com.cloudage.membercenter.repository.ICommodityRepository;
 @Component
 @Service
 @Transactional
-public class DefaultCommodity implements ICommodityService{
+public class DefaultCommodityService implements ICommodityService{
 	@Autowired
 	ICommodityRepository commodityRepo;
 
-
-	//	搜索
+	
+//	搜索
 	@Override
 	public Page<Commodity> searchCommodtyWithKeyword(String keyword, int page,String howsort) {
 		Sort sort;
@@ -43,5 +45,14 @@ public class DefaultCommodity implements ICommodityService{
 	public Commodity findOne(int commodity_id) {
 		return commodityRepo.findOne(commodity_id);
 	}
+
+
+	@Override
+	public Commodity save(Commodity commodity) {
+		// TODO Auto-generated method stub
+		return commodityRepo.save(commodity);
+	}
+
+
 
 }
