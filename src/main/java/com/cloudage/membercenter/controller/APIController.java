@@ -1,24 +1,5 @@
 package com.cloudage.membercenter.controller;
 
-import java.io.File;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.io.FileUtils;
-import org.junit.runners.Parameterized.Parameters;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor;
-
 import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Collections;
 import com.cloudage.membercenter.entity.Comment;
@@ -30,6 +11,16 @@ import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.ICommodityService;
 import com.cloudage.membercenter.service.ILikesService;
 import com.cloudage.membercenter.service.IUserService;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -45,6 +36,7 @@ public class APIController {
 	ICollectionsService collectionsService;
 
 
+
 	@Autowired
 	IArticleService articleService;
 
@@ -53,6 +45,7 @@ public class APIController {
 
 	@Autowired
 	ILikesService likesService;
+
 
 	@RequestMapping(value = "/hello", method=RequestMethod.GET)
 	public @ResponseBody String hello(){
@@ -65,6 +58,7 @@ public class APIController {
 			@RequestParam String passwordHash,
 			@RequestParam String telephone,
 			@RequestParam String nickname,
+			@RequestParam String address,
 
 			MultipartFile avatar,
 			HttpServletRequest request){
@@ -74,6 +68,7 @@ public class APIController {
 		user.setPasswordHash(passwordHash);
 		user.setTelephone(telephone);
 		user.setNickname(nickname);
+		user.setAddress(address);
 
 
 		if(avatar!=null){
@@ -274,5 +269,47 @@ public class APIController {
 			){
 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),page);
 	}
+
+
+
+
+	//	@RequestMapping(value="/commodity/{userId}")
+	//	public List<Commodity> getCommodityByUserID(@PathVariable Integer userId){
+	//		return commodityService.findAllByuserId(userId);
+	//	}
+
+	//发布
+	@RequestMapping(value = "/commodity",method = RequestMethod.POST)
+	public Commodity addCommodity(
+			@RequestParam String CommName,
+			@RequestParam String Commprice,
+			@RequestParam int CommNumber,
+			@RequestParam String CommDescrible,
+			MultipartFile CommImage,
+			HttpServletRequest request){
+		User currentuser = getCurrentUser(request);
+		Commodity commodity = new Commodity();
+		commodity.setUser(currentuser);
+		commodity.setCommName(CommName);
+		commodity.setCommPrice(Commprice);
+		commodity.setCommNumber(CommNumber);
+		commodity.setCommDescribe(CommDescrible);
+
+
+		if(CommImage!=null){
+			try{
+				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/commodity");
+				FileUtils.copyInputStreamToFile(CommImage.getInputStream(), new File(realPath,CommImage+".png"));
+				commodity.setCommImage("commodity/"+CommName+".png");
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return commodityService.save(commodity);
+
+
+	}
+
 
 }
