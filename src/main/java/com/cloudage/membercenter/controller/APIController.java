@@ -37,15 +37,13 @@ public class APIController {
 
 	@Autowired
 	IUserService userService;
-	
+
 	@Autowired
 	ICommodityService commodityService;
-	
+
 	@Autowired
 	ICollectionsService collectionsService;
-	
-	
-	
+
 
 	@Autowired
 	IArticleService articleService;
@@ -193,7 +191,7 @@ public class APIController {
 	public int countLikes(@PathVariable int article_id){
 		return likesService.countLikes(article_id);
 	}
-	
+
 	@RequestMapping("/article/{article_id}/isliked")
 	public boolean checkLiked(@PathVariable int article_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
@@ -213,35 +211,35 @@ public class APIController {
 			likesService.addLike(me, article);
 		else
 			likesService.removeLike(me, article);
-		
+
 		return likesService.countLikes(article_id);
 	}
 
-//	收藏数量
+
 	@RequestMapping("/commodity/{commodity_id}/collect")
 	public int countCollections(@PathVariable int commodity_id){
 		return collectionsService.countCollections(commodity_id);
 	}
-	
-	
-//	是否已收藏
+
+
+
 	@RequestMapping("/commodity/{commodity_id}/iscollected")
 	public boolean checkCollected(@PathVariable int commodity_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
 		return collectionsService.checkCollectioned(me.getId(), commodity_id);
 	}
-	
-	
-	
-//搜索
+
+
+
+
 	@RequestMapping("commodity/s/{keyword}")
-	 	public Page<Commodity> searchCommodtyWithKeyword(
-	 			@PathVariable String keyword,
-	 			@RequestParam(defaultValue = "0") int page
-	 			){
-	 		return commodityService.searchCommodtyWithKeyword(keyword,page);
-	 	}
-//	收藏
+	public Page<Commodity> searchCommodtyWithKeyword(
+			@PathVariable String keyword,
+			@RequestParam(defaultValue = "0") int page
+			){
+		return commodityService.searchCommodtyWithKeyword(keyword,page);
+	}
+
 	@RequestMapping(value="/commodity/{commodity_id}/collect",method = RequestMethod.POST)
 	public int changeCollects(
 			@PathVariable int commodity_id,
@@ -255,26 +253,26 @@ public class APIController {
 			collectionsService.addCollection(me, commodity);
 		else
 			collectionsService.removeCollection(me, commodity);
-		
+
 		return collectionsService.countCollections(commodity_id);
 	}
-	
-	@RequestMapping(value="/collections")
-	 	public Page<Collections> getMyComments(
-	 			HttpServletRequest request
-	 			){
-//	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),0);
-	 		
 
-	 		return collectionsService.getMyCollections(44,0);
-	 	}
-	 	
-	 	@RequestMapping(value="/collections/{page}")
-	 	public Page<Collections> getMycollections(
-	 			@PathVariable int page,
-	 			HttpServletRequest request
-	 			){
-	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),page);
-	 	}
+	@RequestMapping(value="/collections")
+	public Page<Collections> getMyComments(
+			HttpServletRequest request
+			){
+		//	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),0);
+
+
+		return collectionsService.getMyCollections(44,0);
+	}
+
+	@RequestMapping(value="/collections/{page}")
+	public Page<Collections> getMycollections(
+			@PathVariable int page,
+			HttpServletRequest request
+			){
+		return collectionsService.getMyCollections(getCurrentUser(request).getId(),page);
+	}
 
 }

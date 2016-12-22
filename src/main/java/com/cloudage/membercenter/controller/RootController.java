@@ -21,7 +21,8 @@ public class RootController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(ModelMap model,HttpServletRequest request){
-		return "redirect:/staff";
+//		return "redirect:/staff";
+		return "index";
 	}
 	
 	@RequestMapping("/staff")

@@ -10,12 +10,12 @@ import com.cloudage.membercenter.entity.Commodity;
 
 @Repository
 public interface ICommodityRepository extends PagingAndSortingRepository<Commodity, Integer>{
+
+
+
+
 	
-	
-	
-	
-//	搜索
 	@Query("from Commodity commodity where commodity.commName like %?1%")
-	 	Page<Commodity> searchCommodityWithKeyword(String keyword,Pageable page);
+	Page<Commodity> searchCommodityWithKeyword(String keyword,Pageable page);
 
 }
