@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import com.cloudage.membercenter.util.BaseEntity;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 public class User extends BaseEntity{
@@ -12,13 +13,25 @@ public class User extends BaseEntity{
 	String nickname;
 	String telephone;
 	String avatar;
-	
-	@Column(unique=true)
+	String address;
+	Integer money;
+
+	@ColumnDefault("0")
+	//return money==null? 0 : money;
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
+	@Column(unique=true)//该字段是否为唯一标识
 	public String getAccount() {
 		return account;
 	}
 	
-	@Column(nullable=false)
+	@Column(nullable=false)//是否能为空
 	public String getPasswordHash() {
 		return passwordHash;
 	}
@@ -56,5 +69,14 @@ public class User extends BaseEntity{
 	
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+	
+	@Column(nullable=false)//是否能为空
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 }

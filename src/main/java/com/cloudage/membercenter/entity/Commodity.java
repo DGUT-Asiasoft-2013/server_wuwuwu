@@ -5,7 +5,6 @@ import javax.persistence.ManyToOne;
 
 import com.cloudage.membercenter.util.BaseEntity;
 import com.cloudage.membercenter.util.DateRecord;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Commodity extends BaseEntity{
@@ -16,11 +15,8 @@ public class Commodity extends BaseEntity{
 	String CommDescribe;     //商品描述
 	String CommImage;        //商品图片
 
-	            
-	
-	
+
 	@ManyToOne
-	@JsonIgnore
 	public User getUser() {
 		return user;
 	}
