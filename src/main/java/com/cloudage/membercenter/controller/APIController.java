@@ -282,7 +282,7 @@ public class APIController {
 	@RequestMapping(value = "/commodity",method = RequestMethod.POST)
 	public Commodity addCommodity(
 			@RequestParam String CommName,
-			@RequestParam String Commprice,
+			@RequestParam String CommPrice,
 			@RequestParam int CommNumber,
 			@RequestParam String CommDescrible,
 			MultipartFile CommImage,
@@ -291,9 +291,10 @@ public class APIController {
 		Commodity commodity = new Commodity();
 		commodity.setUser(currentuser);
 		commodity.setCommName(CommName);
-		commodity.setCommPrice(Commprice);
+		commodity.setCommPrice(CommPrice);
 		commodity.setCommNumber(CommNumber);
 		commodity.setCommDescribe(CommDescrible);
+	
 		
 
 		if(CommImage!=null){
@@ -308,7 +309,17 @@ public class APIController {
 
 		return commodityService.save(commodity);
 
-
 	}
+	
+	@RequestMapping("/home/{page}")
+	public Page<Commodity> getHome(@PathVariable int page){
+		return commodityService.getHome(page);
+	}
+
+	@RequestMapping("/home")
+	public Page<Commodity> getHomes(){
+		return getHome(0);
+	}
+
 
 }

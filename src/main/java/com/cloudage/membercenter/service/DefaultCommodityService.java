@@ -44,5 +44,13 @@ public class DefaultCommodityService implements ICommodityService{
 	}
 
 
+	@Override
+	public Page<Commodity> getHome(int page) {
+		Sort sort = new Sort(Direction.DESC,"CommName");
+		PageRequest pageRequest = new PageRequest(page, 10);
+		return commodityRepo.findAll(pageRequest);
+	}
+
+
 
 }

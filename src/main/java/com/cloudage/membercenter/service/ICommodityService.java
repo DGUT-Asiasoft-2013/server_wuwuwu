@@ -16,5 +16,7 @@ public interface ICommodityService {
 
 	Commodity save(Commodity commodity);
 
+	Page<Commodity> getHome(int page);
+
 
 }
