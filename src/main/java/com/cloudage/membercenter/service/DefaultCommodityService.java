@@ -25,8 +25,20 @@ public class DefaultCommodityService implements ICommodityService{
 
 	//	搜索
 	@Override
-	public Page<Commodity> searchCommodtyWithKeyword(String keyword, int page) {
-		Sort sort = new Sort(Direction.DESC,"createDate");
+
+	public Page<Commodity> searchCommodtyWithKeyword(String keyword, int page,String howsort) {
+		Sort sort;
+		if(howsort.equals("time")){
+			sort = new Sort(Direction.DESC,"createDate");
+		}else if(howsort.equals("highprice")){
+			sort = new Sort(Direction.DESC,"commPrice");
+		}else if(howsort.equals("lowprice")){
+			sort = new Sort(Direction.ASC,"commPrice");
+		}else{
+			sort = new Sort(Direction.DESC,"createDate");
+		}
+
+
 		PageRequest pageRequest = new PageRequest(page, 10, sort);
 		return commodityRepo.searchCommodityWithKeyword(keyword, pageRequest);
 	}
@@ -42,6 +54,14 @@ public class DefaultCommodityService implements ICommodityService{
 	public Commodity save(Commodity commodity) {
 		// TODO Auto-generated method stub
 		return commodityRepo.save(commodity);
+	}
+
+
+	@Override
+	public Page<Commodity> getHome(int page) {
+		Sort sort = new Sort(Direction.DESC,"CommName");
+		PageRequest pageRequest = new PageRequest(page, 10);
+		return commodityRepo.findAll(pageRequest);
 	}
 
 

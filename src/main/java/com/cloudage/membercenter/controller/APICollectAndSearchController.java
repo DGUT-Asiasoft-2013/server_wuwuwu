@@ -1,5 +1,24 @@
 package com.cloudage.membercenter.controller;
 
+import java.io.File;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.runners.Parameterized.Parameters;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor;
+
 import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Collections;
 import com.cloudage.membercenter.entity.Comment;
@@ -11,31 +30,22 @@ import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.ICommodityService;
 import com.cloudage.membercenter.service.ILikesService;
 import com.cloudage.membercenter.service.IUserService;
-import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.util.List;
 
 @RestController
-@RequestMapping("/api")
-public class APIController {
+@RequestMapping("/cs")
+public class APICollectAndSearchController {
 
 	@Autowired
 	IUserService userService;
-
+	
 	@Autowired
 	ICommodityService commodityService;
-
+	
 	@Autowired
 	ICollectionsService collectionsService;
-
-
+	
+	
+	
 
 	@Autowired
 	IArticleService articleService;
@@ -45,7 +55,6 @@ public class APIController {
 
 	@Autowired
 	ILikesService likesService;
-
 
 	@RequestMapping(value = "/hello", method=RequestMethod.GET)
 	public @ResponseBody String hello(){
@@ -57,9 +66,7 @@ public class APIController {
 			@RequestParam String account,
 			@RequestParam String passwordHash,
 			@RequestParam String telephone,
-			@RequestParam String nickname,
-			@RequestParam String address,
-
+			@RequestParam String name,
 			MultipartFile avatar,
 			HttpServletRequest request){
 
@@ -67,9 +74,7 @@ public class APIController {
 		user.setAccount(account);
 		user.setPasswordHash(passwordHash);
 		user.setTelephone(telephone);
-		user.setNickname(nickname);
-		user.setAddress(address);
-
+		user.setNickname(name);
 
 		if(avatar!=null){
 			try{
@@ -186,7 +191,7 @@ public class APIController {
 	public int countLikes(@PathVariable int article_id){
 		return likesService.countLikes(article_id);
 	}
-
+	
 	@RequestMapping("/article/{article_id}/isliked")
 	public boolean checkLiked(@PathVariable int article_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
@@ -206,30 +211,37 @@ public class APIController {
 			likesService.addLike(me, article);
 		else
 			likesService.removeLike(me, article);
-
+		
 		return likesService.countLikes(article_id);
 	}
 
-
-
-	@RequestMapping("/commodity/{commodity_id}/collect")
+//	收藏数量
+	@RequestMapping("/commodity/{commodity_id}/collected")
 	public int countCollections(@PathVariable int commodity_id){
 		return collectionsService.countCollections(commodity_id);
 	}
-
-
-
+	
+	
+//	是否已收藏
 	@RequestMapping("/commodity/{commodity_id}/iscollected")
 	public boolean checkCollected(@PathVariable int commodity_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
 		return collectionsService.checkCollectioned(me.getId(), commodity_id);
 	}
-
-
-
-
-
-
+	
+	
+	
+//搜索
+	@RequestMapping("commodity/s/{keyword}/{howsort}")
+	 	public Page<Commodity> searchCommodtyWithKeyword(
+	 			@PathVariable String keyword,
+	 			@PathVariable String howsort,
+	 			@RequestParam(defaultValue = "0") int page
+	 			
+	 			){
+	 		return commodityService.searchCommodtyWithKeyword(keyword,page,howsort);
+	 	}
+//	收藏
 	@RequestMapping(value="/commodity/{commodity_id}/collect",method = RequestMethod.POST)
 	public int changeCollects(
 			@PathVariable int commodity_id,
@@ -243,78 +255,24 @@ public class APIController {
 			collectionsService.addCollection(me, commodity);
 		else
 			collectionsService.removeCollection(me, commodity);
-
+		
 		return collectionsService.countCollections(commodity_id);
 	}
-
-	@RequestMapping(value="/collections")
-	public Page<Collections> getMyComments(
-			HttpServletRequest request
-			){
-		//	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),0);
-
-
-		return collectionsService.getMyCollections(44,0);
-	}
-
-	@RequestMapping(value="/collections/{page}")
-	public Page<Collections> getMycollections(
-			@PathVariable int page,
-			HttpServletRequest request
-			){
-		return collectionsService.getMyCollections(getCurrentUser(request).getId(),page);
-	}
-
-
-
-
-	@RequestMapping(value="/commodity/{userId}")
-	public List<Commodity> getCommodityByUserID(@PathVariable Integer userId){
-		return commodityService.findAllByUserId(userId);
-	}
-
-	//发布
-	@RequestMapping(value = "/commodity",method = RequestMethod.POST)
-	public Commodity addCommodity(
-			@RequestParam String CommName,
-			@RequestParam String CommPrice,
-			@RequestParam int CommNumber,
-			@RequestParam String CommDescrible,
-			MultipartFile CommImage,
-			HttpServletRequest request){
-		User currentuser = getCurrentUser(request);
-		Commodity commodity = new Commodity();
-		commodity.setUser(currentuser);
-		commodity.setCommName(CommName);
-		commodity.setCommPrice(CommPrice);
-		commodity.setCommNumber(CommNumber);
-		commodity.setCommDescribe(CommDescrible);
-
-		if(CommImage!=null){
-			try{
-				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/commodity");
-				FileUtils.copyInputStreamToFile(CommImage.getInputStream(), new File(realPath,CommImage+".png"));
-				commodity.setCommImage("commodity/"+CommName+".png");
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		return commodityService.save(commodity);
-
-	}
 	
-	@RequestMapping("/home/{page}")
-	public Page<Commodity> getHome(@PathVariable int page){
-		return commodityService.getHome(page);
-	}
+	@RequestMapping(value="/collections")
+	 	public Page<Collections> getMyComments(
+	 			HttpServletRequest request
+	 			){
+	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),0);
 
-	@RequestMapping("/home")
-	public Page<Commodity> getHomes(){
-		return getHome(0);
-	}
-
-
-
+	 	}
+	 	
+	 	@RequestMapping(value="/collections/{page}")
+	 	public Page<Collections> getMycollections(
+	 			@PathVariable int page,
+	 			HttpServletRequest request
+	 			){
+	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),page);
+	 	}
 
 }
