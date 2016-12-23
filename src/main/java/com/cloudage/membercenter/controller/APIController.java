@@ -313,8 +313,4 @@ public class APIController {
 	public Page<Commodity> getHomes(){
 		return getHome(0);
 	}
-
-
-
-
 }
