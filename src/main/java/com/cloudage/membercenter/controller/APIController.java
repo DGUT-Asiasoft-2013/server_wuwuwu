@@ -268,10 +268,10 @@ public class APIController {
 
 
 
-	//	@RequestMapping(value="/commodity/{userId}")
-	//	public List<Commodity> getCommodityByUserID(@PathVariable Integer userId){
-	//		return commodityService.findAllByuserId(userId);
-	//	}
+	@RequestMapping(value="/commodity/{userId}")
+	public List<Commodity> getCommodityByUserID(@PathVariable Integer userId){
+		return commodityService.findAllByUserId(userId);
+	}
 
 	//发布
 	@RequestMapping(value = "/commodity",method = RequestMethod.POST)
