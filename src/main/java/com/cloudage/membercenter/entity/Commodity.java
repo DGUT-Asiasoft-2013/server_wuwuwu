@@ -14,18 +14,10 @@ public class Commodity extends DateRecord{
 	String CommPrice;        //商品价格
 	int CommNumber;          //商品数量
 	String CommDescribe;     //商品描述
-	String CommImage;        //商品图片
+	String CommImage;
 
-	            
-	
-	public int getCommNumber() {
-		return CommNumber;
-	}
-	public void setCommNumber(int commNumber) {
-		CommNumber = commNumber;
-	}
-	@ManyToOne
-	@JsonIgnore
+
+	@ManyToOne(optional=false)
 	public User getUser() {
 		return user;
 	}
@@ -44,17 +36,22 @@ public class Commodity extends DateRecord{
 	public void setCommPrice(String commPrice) {
 		CommPrice = commPrice;
 	}
+	public int getCommNumber() {
+		return CommNumber;
+	}
+	public void setCommNumber(int commNumber) {
+		CommNumber = commNumber;
+	}
 	public String getCommDescribe() {
 		return CommDescribe;
 	}
-	public void setCommDescribe(String commPescribe) {
-		CommDescribe = commPescribe;
+	public void setCommDescribe(String commDescribe) {
+		CommDescribe = commDescribe;
 	}
 	public String getCommImage() {
 		return CommImage;
 	}
 	public void setCommImage(String commImage) {
 		CommImage = commImage;
-	}
-	
+	}       
 }
