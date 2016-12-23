@@ -293,7 +293,7 @@ public class APIController {
 		if(CommImage!=null){
 			try{
 				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/commodity");
-				FileUtils.copyInputStreamToFile(CommImage.getInputStream(), new File(realPath,CommImage+".png"));
+				FileUtils.copyInputStreamToFile(CommImage.getInputStream(), new File(realPath,CommName+".png"));
 				commodity.setCommImage("commodity/"+CommName+".png");
 			}catch (Exception e) {
 				e.printStackTrace();
