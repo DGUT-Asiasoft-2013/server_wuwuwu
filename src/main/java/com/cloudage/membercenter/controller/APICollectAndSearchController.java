@@ -217,14 +217,17 @@ public class APICollectAndSearchController {
 
 //	收藏数量
 	@RequestMapping("/commodity/{commodity_id}/collected")
-	public int countCollections(@PathVariable int commodity_id){
+	public int countCollections(
+			@PathVariable int commodity_id){
 		return collectionsService.countCollections(commodity_id);
 	}
 	
 	
 //	是否已收藏
 	@RequestMapping("/commodity/{commodity_id}/iscollected")
-	public boolean checkCollected(@PathVariable int commodity_id,HttpServletRequest request){
+	public boolean checkCollected(
+			@PathVariable int commodity_id,
+			HttpServletRequest request){
 		User me = getCurrentUser(request);
 		return collectionsService.checkCollectioned(me.getId(), commodity_id);
 	}
