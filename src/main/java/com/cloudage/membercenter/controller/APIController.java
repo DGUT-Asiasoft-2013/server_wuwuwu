@@ -295,7 +295,7 @@ public class APIController {
 		if(CommImage!=null){
 			try{
 				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/commodity");
-				FileUtils.copyInputStreamToFile(CommImage.getInputStream(), new File(realPath,CommImage+".png"));
+				FileUtils.copyInputStreamToFile(CommImage.getInputStream(), new File(realPath,CommName+".png"));
 				commodity.setCommImage("commodity/"+CommName+".png");
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -305,7 +305,7 @@ public class APIController {
 		return commodityService.save(commodity);
 
 	}
-	
+
 	@RequestMapping("/home/{page}")
 	public Page<Commodity> getHome(@PathVariable int page){
 		return commodityService.getHome(page);
@@ -315,8 +315,4 @@ public class APIController {
 	public Page<Commodity> getHomes(){
 		return getHome(0);
 	}
-
-
-
-
 }
