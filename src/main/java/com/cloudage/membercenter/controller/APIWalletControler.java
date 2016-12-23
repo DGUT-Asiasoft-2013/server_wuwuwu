@@ -60,4 +60,11 @@ public class APIWalletControler {
         iUserService.save(user);
                 return true;
     }
+
+    @RequestMapping(value = "/checkmoney",method = RequestMethod.GET)
+    public int checkmoney(
+            HttpServletRequest request){
+                User user = iUserService.findById(10);
+                return user.getMoney();
+    }
 }
