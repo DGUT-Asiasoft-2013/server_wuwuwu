@@ -60,7 +60,6 @@ public class APIController {
 			@RequestParam String nickname,
 			@RequestParam String address,
 			@RequestParam Integer money,
-
 			MultipartFile avatar,
 			HttpServletRequest request){
 
