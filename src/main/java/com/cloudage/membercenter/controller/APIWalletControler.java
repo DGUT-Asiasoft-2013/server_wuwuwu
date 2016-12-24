@@ -18,46 +18,53 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/wallet")
 public class APIWalletControler {
 
-	@Autowired
-	IBillService iBillService;
+    @Autowired
+    IBillService iBillService;
 
-	@Autowired
-	IUserService iUserService;
+    @Autowired
+    IUserService iUserService;
 
-	@RequestMapping(value="/my_bill", method= RequestMethod.GET)
-	public Page<Bill> getCurrentUser(HttpServletRequest request){
-		//  HttpSession session = request.getSession(true);
-		//  Integer uid = (Integer) session.getAttribute("uid");
-		return iBillService.findByUserId(13,0);
-	}
+    @RequestMapping(value="/my_bill", method= RequestMethod.GET)
+    public Page<Bill> getCurrentUser(HttpServletRequest request){
+      //  HttpSession session = request.getSession(true);
+      //  Integer uid = (Integer) session.getAttribute("uid");
+        return iBillService.findByUserId(13,0);
+    }
 
-	@RequestMapping(value = "/save_bill/{commodity_id}")
-	public Bill savebill(
-			@PathVariable int commodity_id,
-			HttpServletRequest request){
+    @RequestMapping(value = "/save_bill/{commodity_id}")
+    public Bill savebill(
+            @PathVariable int commodity_id,
+            HttpServletRequest request){
 
-		//   Commodity commodity = new Commodity();
-		HttpSession session = request.getSession(true);
-		Integer uid = (Integer) session.getAttribute("uid");
-		User user = iUserService.findById(uid);
-		Bill bill = new Bill();
-		//  bill.setCommodity(commodity);
-		bill.setUser(user);
+     //   Commodity commodity = new Commodity();
+        HttpSession session = request.getSession(true);
+        Integer uid = (Integer) session.getAttribute("uid");
+        User user = iUserService.findById(uid);
+        Bill bill = new Bill();
+      //  bill.setCommodity(commodity);
+        bill.setUser(user);
 
-		return iBillService.save(bill);
-	}
+        return iBillService.save(bill);
+    }
 
-	@RequestMapping(value = "/recharet",method = RequestMethod.POST)
-	public boolean recharet(
-			@RequestParam int money,
-			HttpServletRequest request){
-		//  HttpSession session = request.getSession(true);
-		//  Integer uid = (Integer) session.getAttribute("uid");
-		User user = iUserService.findById(10);
-		int oldmoney = user.getMoney();
-		money = oldmoney+money;
-		user.setMoney(money);
-		iUserService.save(user);
-		return true;
-	}
+    @RequestMapping(value = "/recharet",method = RequestMethod.POST)
+    public boolean recharet(
+            @RequestParam int money,
+            HttpServletRequest request){
+      //  HttpSession session = request.getSession(true);
+      //  Integer uid = (Integer) session.getAttribute("uid");
+        User user = iUserService.findById(10);
+        int oldmoney = user.getMoney();
+        money = oldmoney+money;
+        user.setMoney(money);
+        iUserService.save(user);
+                return true;
+    }
+
+    @RequestMapping(value = "/checkmoney",method = RequestMethod.GET)
+    public int checkmoney(
+            HttpServletRequest request){
+                User user = iUserService.findById(10);
+                return user.getMoney();
+    }
 }
