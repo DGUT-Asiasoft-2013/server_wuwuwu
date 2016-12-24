@@ -3,6 +3,7 @@ package com.cloudage.membercenter.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
@@ -18,9 +19,9 @@ public class PurchaseHistory extends BaseEntity{
 	int totalPrice; //总价
 	int commodityPrice;
 
-	public void setCommodityPrice(int commodityPrice) {
-		this.commodityPrice = commodityPrice;
-	}
+	
+	
+	@ManyToOne(optional=false)
 	public User getUser() {
 		return user;
 	}
@@ -61,12 +62,11 @@ public class PurchaseHistory extends BaseEntity{
 		return commodityPrice;
 	}
 
-	@Transient
-	public Integer getUserId(){ //用户ID
-		return user.getId();
-	}
-
 	
+
+	public void setCommodityPrice(int commodityPrice) {
+		this.commodityPrice = commodityPrice;
+	}
 
 	@PrePersist
 	void onPrePersist(){
