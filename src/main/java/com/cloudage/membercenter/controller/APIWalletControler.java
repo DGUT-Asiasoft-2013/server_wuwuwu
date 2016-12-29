@@ -3,6 +3,7 @@ import com.cloudage.membercenter.entity.Bill;
 import com.cloudage.membercenter.entity.Commodity;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBillService;
+import com.cloudage.membercenter.service.ICommodityService;
 import com.cloudage.membercenter.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,12 +24,13 @@ public class APIWalletControler {
 
     @Autowired
     IUserService iUserService;
+    ICommodityService iCommodityService;
 
     @RequestMapping(value="/my_bill", method= RequestMethod.GET)
     public Page<Bill> getCurrentUser(HttpServletRequest request){
-      //  HttpSession session = request.getSession(true);
-      //  Integer uid = (Integer) session.getAttribute("uid");
-        return iBillService.findByUserId(13,0);
+        HttpSession session = request.getSession(true);
+        Integer uid = (Integer) session.getAttribute("uid");
+        return iBillService.findByUserId(uid,0);
     }
 
     @RequestMapping(value = "/save_bill/{commodity_id}")
@@ -36,14 +38,13 @@ public class APIWalletControler {
             @PathVariable int commodity_id,
             HttpServletRequest request){
 
-     //   Commodity commodity = new Commodity();
+        Commodity commodity = iCommodityService.findOne(commodity_id);
         HttpSession session = request.getSession(true);
         Integer uid = (Integer) session.getAttribute("uid");
         User user = iUserService.findById(uid);
         Bill bill = new Bill();
-      //  bill.setCommodity(commodity);
+        bill.setCommodity(commodity);
         bill.setUser(user);
-
         return iBillService.save(bill);
     }
 
@@ -51,9 +52,9 @@ public class APIWalletControler {
     public boolean recharet(
             @RequestParam int money,
             HttpServletRequest request){
-      //  HttpSession session = request.getSession(true);
-      //  Integer uid = (Integer) session.getAttribute("uid");
-        User user = iUserService.findById(10);
+        HttpSession session = request.getSession(true);
+        Integer uid = (Integer) session.getAttribute("uid");
+        User user = iUserService.findById(uid);
         int oldmoney = user.getMoney();
         money = oldmoney+money;
         user.setMoney(money);
@@ -64,7 +65,9 @@ public class APIWalletControler {
     @RequestMapping(value = "/checkmoney",method = RequestMethod.GET)
     public int checkmoney(
             HttpServletRequest request){
-                User user = iUserService.findById(10);
+        HttpSession session = request.getSession(true);
+        Integer uid = (Integer) session.getAttribute("uid");
+        User user = iUserService.findById(uid);
                 return user.getMoney();
     }
 }
