@@ -54,7 +54,7 @@ public class APIController {
 
 	@RequestMapping(value = "/hello", method=RequestMethod.GET)
 	public @ResponseBody String hello(){
-		return "HELLO WORLD";
+		return "wuwuwu~~~";
 	}
 
 	@RequestMapping(value="/register", method=RequestMethod.POST)
@@ -65,7 +65,6 @@ public class APIController {
 			@RequestParam String nickname,
 			@RequestParam String address,
 			@RequestParam Integer money,
-
 			MultipartFile avatar,
 			HttpServletRequest request){
 
