@@ -3,6 +3,7 @@ import com.cloudage.membercenter.entity.Bill;
 import com.cloudage.membercenter.entity.Commodity;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBillService;
+import com.cloudage.membercenter.service.ICommodityService;
 import com.cloudage.membercenter.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,9 @@ public class APIWalletControler {
 
     @Autowired
     IUserService iUserService;
+    
+    @Autowired
+    ICommodityService iCommodityService;
 
     @RequestMapping(value="/my_bill", method= RequestMethod.GET)
     public Page<Bill> getCurrentUser(HttpServletRequest request){
@@ -31,18 +35,22 @@ public class APIWalletControler {
         return iBillService.findByUserId(13,0);
     }
 
-    @RequestMapping(value = "/save_bill/{commodity_id}")
+    @RequestMapping(value = "/save_bill/{commodity_Id}")
     public Bill savebill(
-            @PathVariable int commodity_id,
+            @PathVariable int commodity_Id,
+            @RequestParam int buyNumber,
+            @RequestParam int totalPrice,
             HttpServletRequest request){
 
-     //   Commodity commodity = new Commodity();
+        Commodity commodity = iCommodityService.findOne(commodity_Id);
         HttpSession session = request.getSession(true);
         Integer uid = (Integer) session.getAttribute("uid");
         User user = iUserService.findById(uid);
         Bill bill = new Bill();
-      //  bill.setCommodity(commodity);
+        bill.setCommodity(commodity);
         bill.setUser(user);
+        bill.setBuyNumber(buyNumber);
+        bill.setTotalPrice(totalPrice);
 
         return iBillService.save(bill);
     }
