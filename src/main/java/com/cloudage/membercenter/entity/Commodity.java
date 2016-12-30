@@ -15,6 +15,8 @@ public class Commodity extends DateRecord{
 	int CommNumber;          //商品数量
 	String CommDescribe;     //商品描述
 	String CommImage;
+	String CommType;      //商品类型
+
 
 
 	@ManyToOne(optional=false)
@@ -53,5 +55,12 @@ public class Commodity extends DateRecord{
 	}
 	public void setCommImage(String commImage) {
 		CommImage = commImage;
-	}       
+	}
+	public String getCommType() {
+		return CommType;
+	}
+	public void setCommType(String commType) {
+		CommType = commType;
+	}    
+	
 }
