@@ -54,7 +54,7 @@ public class APIController {
 
 	@RequestMapping(value = "/hello", method=RequestMethod.GET)
 	public @ResponseBody String hello(){
-		return "HELLO WORLD";
+		return "wuwuwu~~~";
 	}
 
 	@RequestMapping(value="/register", method=RequestMethod.POST)
@@ -286,6 +286,7 @@ public class APIController {
 			@RequestParam String CommPrice,
 			@RequestParam int CommNumber,
 			@RequestParam String CommDescrible,
+			@RequestParam String CommType,
 			MultipartFile CommImage,
 			HttpServletRequest request){
 		User currentuser = getCurrentUser(request);
@@ -295,6 +296,7 @@ public class APIController {
 		commodity.setCommPrice(CommPrice);
 		commodity.setCommNumber(CommNumber);
 		commodity.setCommDescribe(CommDescrible);
+		commodity.setCommType(CommType);
 
 		if(CommImage!=null){
 			try{
