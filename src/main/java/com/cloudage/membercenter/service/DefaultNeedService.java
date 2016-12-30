@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cloudage.membercenter.entity.Need;
-import com.cloudage.membercenter.entity.Need;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.INeedRepository;
 
