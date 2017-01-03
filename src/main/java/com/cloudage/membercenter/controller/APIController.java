@@ -286,6 +286,7 @@ public class APIController {
 			@RequestParam String CommPrice,
 			@RequestParam int CommNumber,
 			@RequestParam String CommDescrible,
+			@RequestParam String CommType,
 			MultipartFile CommImage,
 			HttpServletRequest request){
 		User currentuser = getCurrentUser(request);
@@ -295,6 +296,7 @@ public class APIController {
 		commodity.setCommPrice(CommPrice);
 		commodity.setCommNumber(CommNumber);
 		commodity.setCommDescribe(CommDescrible);
+		commodity.setCommType(CommType);
 
 		if(CommImage!=null){
 			try{
