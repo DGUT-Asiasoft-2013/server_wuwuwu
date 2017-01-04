@@ -8,37 +8,31 @@ import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
 import com.cloudage.membercenter.util.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class PurchaseHistory extends BaseEntity{
 
 	User user;
-	Integer commodity_Id; 
+	Commodity commodity; 
 	Date createDate; //购买日期
 	int buyNumber;  //购买数量
 	int totalPrice; //总价
-	int commodityPrice;
 
-	
-	
+
 	@ManyToOne(optional=false)
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public Integer getCommodity_Id() {
-		return commodity_Id;
-	}
-	public void setCommodity_Id(Integer commodity_Id) {
-		this.commodity_Id = commodity_Id;
 	}
 
 	public Date getCreateDate() {
 		return createDate;
 	}
+
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
@@ -46,6 +40,7 @@ public class PurchaseHistory extends BaseEntity{
 	public int getBuyNumber() {
 		return buyNumber;
 	}
+
 	public void setBuyNumber(int buyNumber) {
 		this.buyNumber = buyNumber;
 	}
@@ -53,19 +48,19 @@ public class PurchaseHistory extends BaseEntity{
 	public int getTotalPrice() {
 		return totalPrice;
 	}
+
 	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 
-	
-	public int getCommodityPrice(){ //商品单价
-		return commodityPrice;
+	@ManyToOne(optional=false)
+	public Commodity getCommodity() {
+		return commodity;
 	}
 
 	
-
-	public void setCommodityPrice(int commodityPrice) {
-		this.commodityPrice = commodityPrice;
+	public void setCommodity(Commodity commodity) {
+		this.commodity = commodity;
 	}
 
 	@PrePersist

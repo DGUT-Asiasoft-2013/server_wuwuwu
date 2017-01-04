@@ -289,6 +289,7 @@ public class APIController {
 			@RequestParam String CommPrice,
 			@RequestParam int CommNumber,
 			@RequestParam String CommDescrible,
+			@RequestParam String CommType,
 			MultipartFile CommImage,
 			HttpServletRequest request){
 		User currentuser = getCurrentUser(request);
@@ -298,6 +299,7 @@ public class APIController {
 		commodity.setCommPrice(CommPrice);
 		commodity.setCommNumber(CommNumber);
 		commodity.setCommDescribe(CommDescrible);
+		commodity.setCommType(CommType);
 
 		if(CommImage!=null){
 			try{
@@ -325,19 +327,23 @@ public class APIController {
 	
 	@RequestMapping(value = "/purchaseHistory",method=RequestMethod.POST)
 	public PurchaseHistory purchaseHistory(
-			@RequestParam Integer commmodity_Id,
-			@RequestParam int commodityPrice,
+			@RequestParam int commodity_Id,
 			@RequestParam int buyNumber,
 			@RequestParam int totalPrice,
 			HttpServletRequest request){
 		User currentuser = getCurrentUser(request);
+		Commodity commodity = commodityService.findOne(commodity_Id);
 		PurchaseHistory purchaseHistory = new PurchaseHistory();
 		purchaseHistory.setUser(currentuser);
+		purchaseHistory.setCommodity(commodity);
 		purchaseHistory.setBuyNumber(buyNumber);
-		purchaseHistory.setCommodityPrice(commodityPrice);
 		purchaseHistory.setTotalPrice(totalPrice);
-		purchaseHistory.setCommodity_Id(commmodity_Id);
 		
 		return purchaseHService.save(purchaseHistory);
+	}
+	
+	@RequestMapping("/purchaseOrder")
+	public Page<PurchaseHistory> getOrder(){
+		return purchaseHService.getOrderFeeds(0);
 	}
 }
