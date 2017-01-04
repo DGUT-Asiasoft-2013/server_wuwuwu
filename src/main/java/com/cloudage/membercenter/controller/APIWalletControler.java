@@ -24,15 +24,15 @@ public class APIWalletControler {
 
     @Autowired
     IUserService iUserService;
-    
+
     @Autowired
     ICommodityService iCommodityService;
 
     @RequestMapping(value="/my_bill", method= RequestMethod.GET)
     public Page<Bill> getCurrentUser(HttpServletRequest request){
-      //  HttpSession session = request.getSession(true);
-      //  Integer uid = (Integer) session.getAttribute("uid");
-        return iBillService.findByUserId(13,0);
+        HttpSession session = request.getSession(true);
+        Integer uid = (Integer) session.getAttribute("uid");
+        return iBillService.findByUserId(uid,0);
     }
 
     @RequestMapping(value = "/save_bill/{commodity_Id}")
@@ -41,6 +41,7 @@ public class APIWalletControler {
             @RequestParam int buyNumber,
             @RequestParam int totalPrice,
             HttpServletRequest request){
+
 
         Commodity commodity = iCommodityService.findOne(commodity_Id);
         HttpSession session = request.getSession(true);
@@ -59,9 +60,9 @@ public class APIWalletControler {
     public boolean recharet(
             @RequestParam int money,
             HttpServletRequest request){
-      //  HttpSession session = request.getSession(true);
-      //  Integer uid = (Integer) session.getAttribute("uid");
-        User user = iUserService.findById(10);
+        HttpSession session = request.getSession(true);
+        Integer uid = (Integer) session.getAttribute("uid");
+        User user = iUserService.findById(uid);
         int oldmoney = user.getMoney();
         money = oldmoney+money;
         user.setMoney(money);
@@ -72,7 +73,9 @@ public class APIWalletControler {
     @RequestMapping(value = "/checkmoney",method = RequestMethod.GET)
     public int checkmoney(
             HttpServletRequest request){
-                User user = iUserService.findById(10);
+        HttpSession session = request.getSession(true);
+        Integer uid = (Integer) session.getAttribute("uid");
+        User user = iUserService.findById(uid);
                 return user.getMoney();
     }
 }

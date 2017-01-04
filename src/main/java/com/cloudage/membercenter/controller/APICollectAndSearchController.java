@@ -23,12 +23,14 @@ import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Collections;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.Commodity;
+import com.cloudage.membercenter.entity.Need;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IArticleService;
 import com.cloudage.membercenter.service.ICollectionsService;
 import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.ICommodityService;
 import com.cloudage.membercenter.service.ILikesService;
+import com.cloudage.membercenter.service.INeedService;
 import com.cloudage.membercenter.service.IUserService;
 
 @RestController
@@ -55,6 +57,9 @@ public class APICollectAndSearchController {
 
 	@Autowired
 	ILikesService likesService;
+	
+	@Autowired
+	INeedService needService;
 
 	@RequestMapping(value = "/hello", method=RequestMethod.GET)
 	public @ResponseBody String hello(){
@@ -277,5 +282,34 @@ public class APICollectAndSearchController {
 	 			){
 	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),page);
 	 	}
+	 	
+//	 	需求
+		@RequestMapping(value="/need/{userId}")
+		public List<Need> getNeedsByUserID(@PathVariable Integer userId){
+			return needService.findAllByUserId(userId);
+		}
+
+		@RequestMapping(value="/need",method=RequestMethod.POST)
+		public Need addNeed(
+				@RequestParam String title,
+				@RequestParam String content,
+				HttpServletRequest request){
+			User currentUser = getCurrentUser(request);
+			Need need = new Need();
+			need.setUser(currentUser);
+			need.setTitle(title);
+			need.setContent(content);
+			return needService.save(need);
+		}
+
+		@RequestMapping("/needs/{page}")
+		public Page<Need> getNeeds(@PathVariable int page){
+			return needService.getNeeds(page);
+		}
+
+		@RequestMapping("/needs")
+		public Page<Need> getNeeds(){
+			return getNeeds(0);
+		}
 
 }
