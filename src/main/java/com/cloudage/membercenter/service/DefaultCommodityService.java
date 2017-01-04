@@ -82,5 +82,12 @@ public class DefaultCommodityService implements ICommodityService{
 	}
 
 
+	@Override
+	public List<Commodity> getCommodityPictures() {
+		int[] showingCommodityId = {22,23,24,25,26};
+		return commodityRepo.findAllByIds(showingCommodityId);
+	}
+
+
 
 }

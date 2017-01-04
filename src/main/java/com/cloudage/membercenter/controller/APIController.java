@@ -4,12 +4,14 @@ import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Collections;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.Commodity;
+import com.cloudage.membercenter.entity.PurchaseHistory;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IArticleService;
 import com.cloudage.membercenter.service.ICollectionsService;
 import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.ICommodityService;
 import com.cloudage.membercenter.service.ILikesService;
+import com.cloudage.membercenter.service.IPurchaseHistoryService;
 import com.cloudage.membercenter.service.IUserService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,9 @@ public class APIController {
 
 	@Autowired
 	ILikesService likesService;
+	
+	@Autowired
+	IPurchaseHistoryService purchaseHService;
 
 
 	@RequestMapping(value = "/hello", method=RequestMethod.GET)
@@ -60,7 +65,6 @@ public class APIController {
 			@RequestParam String nickname,
 			@RequestParam String address,
 			@RequestParam Integer money,
-
 			MultipartFile avatar,
 			HttpServletRequest request){
 
@@ -229,7 +233,10 @@ public class APIController {
 
 
 
-
+    @RequestMapping(value = "/commodity/pictures",method = RequestMethod.GET)
+    public List<Commodity> getCommodityPictures(){
+    	return commodityService.getCommodityPictures();
+    }
 
 
 	@RequestMapping(value="/commodity/{commodity_id}/collect",method = RequestMethod.POST)
@@ -314,5 +321,23 @@ public class APIController {
 	@RequestMapping("/home")
 	public Page<Commodity> getHomes(){
 		return getHome(0);
+	}
+	
+	@RequestMapping(value = "/purchaseHistory",method=RequestMethod.POST)
+	public PurchaseHistory purchaseHistory(
+			@RequestParam Integer commmodity_Id,
+			@RequestParam int commodityPrice,
+			@RequestParam int buyNumber,
+			@RequestParam int totalPrice,
+			HttpServletRequest request){
+		User currentuser = getCurrentUser(request);
+		PurchaseHistory purchaseHistory = new PurchaseHistory();
+		purchaseHistory.setUser(currentuser);
+		purchaseHistory.setBuyNumber(buyNumber);
+		purchaseHistory.setCommodityPrice(commodityPrice);
+		purchaseHistory.setTotalPrice(totalPrice);
+		purchaseHistory.setCommodity_Id(commmodity_Id);
+		
+		return purchaseHService.save(purchaseHistory);
 	}
 }
