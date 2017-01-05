@@ -1,6 +1,8 @@
 package com.cloudage.membercenter.entity;
 
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import com.cloudage.membercenter.util.DateRecord;
@@ -13,6 +15,14 @@ public class Need extends DateRecord {
 	String title;
 	String content;
 	
+	Date endDate;
+	
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 	@ManyToOne(optional=false)
 	public User getUser() {
 		return user;
