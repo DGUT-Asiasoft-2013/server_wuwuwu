@@ -23,5 +23,8 @@ public interface ICommodityRepository extends PagingAndSortingRepository<Commodi
 	@Query("from Commodity commodity where commodity.commName like %?1%")
 	Page<Commodity> searchCommodityWithKeyword(String keyword,Pageable page);
 
+	@Query("from Commodity commodity where commodity.id in ?1")
+	List<Commodity> findAllByIds(int[] showingCommodityId);
+
 
 }
