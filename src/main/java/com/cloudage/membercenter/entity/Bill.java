@@ -15,6 +15,8 @@ import javax.persistence.Transient;
 public class Bill extends DateRecord {
     User user;
     Commodity commodity;
+    int buyNumber;
+    int totalPrice;
 
     @ManyToOne(optional = false)
     public Commodity getCommodity() {
@@ -36,4 +38,21 @@ public class Bill extends DateRecord {
         this.user = user;
     }
 
+	public int getBuyNumber() {
+		return buyNumber;
+	}
+
+	public void setBuyNumber(int buyNumber) {
+		this.buyNumber = buyNumber;
+	}
+
+	public int getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(int totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+    
 }

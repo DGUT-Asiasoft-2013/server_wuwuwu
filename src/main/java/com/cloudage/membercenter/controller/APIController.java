@@ -60,7 +60,7 @@ public class APIController {
 
 	@RequestMapping(value = "/hello", method=RequestMethod.GET)
 	public @ResponseBody String hello(){
-		return "wuwuwu~~~";
+		return "wuwuwu~~~~";
 	}
 
 	@RequestMapping(value="/register", method=RequestMethod.POST)
@@ -237,6 +237,16 @@ public class APIController {
 	}
 
 
+
+
+
+	@RequestMapping(value = "/commodity/pictures",method = RequestMethod.GET)
+	public List<Commodity> getCommodityPictures(){
+		return commodityService.getCommodityPictures();
+	}
+
+
+
 	@RequestMapping(value="/commodity/{commodity_id}/collect",method = RequestMethod.POST)
 	public int changeCollects(
 			@PathVariable int commodity_id,
@@ -323,23 +333,29 @@ public class APIController {
 		return getHome(0);
 	}
 
+
+
+
 	@RequestMapping(value = "/purchaseHistory",method=RequestMethod.POST)
 	public PurchaseHistory purchaseHistory(
-			@RequestParam Integer commmodity_Id,
-			@RequestParam int commodityPrice,
+			@RequestParam int commodity_Id,
 			@RequestParam int buyNumber,
 			@RequestParam int totalPrice,
 			HttpServletRequest request){
 		User currentuser = getCurrentUser(request);
+		Commodity commodity = commodityService.findOne(commodity_Id);
 		PurchaseHistory purchaseHistory = new PurchaseHistory();
 		purchaseHistory.setUser(currentuser);
+		purchaseHistory.setCommodity(commodity);
 		purchaseHistory.setBuyNumber(buyNumber);
-		purchaseHistory.setCommodityPrice(commodityPrice);
 		purchaseHistory.setTotalPrice(totalPrice);
-		purchaseHistory.setCommodity_Id(commmodity_Id);
+
+
+
 
 		return purchaseHService.save(purchaseHistory);
 	}
+
 
 	@RequestMapping(value = "/address",method=RequestMethod.POST)
 	public Address address(
@@ -361,5 +377,30 @@ public class APIController {
 	@RequestMapping(value="/address/{userId}")
 	public Page<Address> getAddressByUserID(@PathVariable Integer user_id,Integer page){
 		return addressService.findByUserId(user_id, page);
+	}
+
+
+
+	//分类
+
+	@RequestMapping("/type/{type}/{page}")
+	public Page<Commodity> getType(
+			@PathVariable String type,
+			@PathVariable int page
+			){
+		return commodityService.findBook(type, page);
+	}
+
+	@RequestMapping("/type/{type}")
+	public Page<Commodity> getBooks(
+			@PathVariable String type
+			){
+		return getType(type,0);
+	}
+
+
+	@RequestMapping("/purchaseOrder")
+	public Page<PurchaseHistory> getOrder(){
+		return purchaseHService.getOrderFeeds(0);
 	}
 }
