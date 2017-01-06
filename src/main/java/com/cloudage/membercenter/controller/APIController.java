@@ -343,12 +343,17 @@ public class APIController {
 
 	@RequestMapping(value = "/address",method=RequestMethod.POST)
 	public Address address(
+			@RequestParam String address_name,
+			@RequestParam String address_telephone,
 			@RequestParam String address,
 			HttpServletRequest request){
 		User currentuser = getCurrentUser(request);
 		Address newaddress = new Address();
 		newaddress.setUser(currentuser);
+		newaddress.setAddress_name(address_name);
+		newaddress.setAddress_telephone(address_telephone);
 		newaddress.setAddress(address);
+
 
 		return addressService.save(newaddress);
 	}
