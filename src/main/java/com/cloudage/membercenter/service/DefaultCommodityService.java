@@ -82,5 +82,17 @@ public class DefaultCommodityService implements ICommodityService{
 	}
 
 
+	@Override
+	public Page<Commodity> getType(int page) {
+		Sort sort = new Sort(Direction.DESC,"CommType");
+		PageRequest pageRequest = new PageRequest(page, 10);
+		return commodityRepo.findBook("CommType",pageRequest);
+	}
 
+	@Override
+	public Page<Commodity> findBook(String type, int page) {
+		PageRequest pageReq = new PageRequest(page, 10);
+		
+		return commodityRepo.findBook(type, pageReq);
+	}
 }

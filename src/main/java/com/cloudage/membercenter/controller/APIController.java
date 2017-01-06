@@ -322,6 +322,7 @@ public class APIController {
 		return getHome(0);
 	}
 	
+	
 	@RequestMapping(value = "/purchaseHistory",method=RequestMethod.POST)
 	public PurchaseHistory purchaseHistory(
 			@RequestParam Integer commmodity_Id,
@@ -339,4 +340,23 @@ public class APIController {
 		
 		return purchaseHService.save(purchaseHistory);
 	}
+	
+	//分类
+	
+	@RequestMapping("/type/{type}/{page}")
+	public Page<Commodity> getType(
+			@PathVariable String type,
+			@PathVariable int page
+			){
+		return commodityService.findBook(type, page);
+	}
+	
+	@RequestMapping("/type/{type}")
+	public Page<Commodity> getBooks(
+			@PathVariable String type
+			){
+		return getType(type,0);
+	}
+
+	
 }
