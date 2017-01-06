@@ -343,7 +343,7 @@ public class APIController {
 		return purchaseHService.save(purchaseHistory);
 	}
 	
-<<<<<<< HEAD
+
 	//分类
 	
 	@RequestMapping("/type/{type}/{page}")
@@ -361,11 +361,9 @@ public class APIController {
 		return getType(type,0);
 	}
 
-	
-=======
+
 	@RequestMapping("/purchaseOrder")
 	public Page<PurchaseHistory> getOrder(){
 		return purchaseHService.getOrderFeeds(0);
 	}
->>>>>>> branch 'master' of https://github.com/DGUT-Asiasoft-2013/server_wuwuwu.git
 }
