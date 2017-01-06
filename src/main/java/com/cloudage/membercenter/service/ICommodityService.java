@@ -22,10 +22,13 @@ public interface ICommodityService {
 	Commodity save(Commodity commodity);
 
 	Page<Commodity> getHome(int page);
+
 	
 	//书的分类
 	Page<Commodity> getType(int page);
 	
 	Page<Commodity> findBook(String type, int page);
+
+	List<Commodity> getCommodityPictures();
 
 }

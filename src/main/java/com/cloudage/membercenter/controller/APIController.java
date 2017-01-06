@@ -54,7 +54,7 @@ public class APIController {
 
 	@RequestMapping(value = "/hello", method=RequestMethod.GET)
 	public @ResponseBody String hello(){
-		return "wuwuwu~~~";
+		return "wuwuwu~~~~";
 	}
 
 	@RequestMapping(value="/register", method=RequestMethod.POST)
@@ -233,7 +233,10 @@ public class APIController {
 
 
 
-
+    @RequestMapping(value = "/commodity/pictures",method = RequestMethod.GET)
+    public List<Commodity> getCommodityPictures(){
+    	return commodityService.getCommodityPictures();
+    }
 
 
 	@RequestMapping(value="/commodity/{commodity_id}/collect",method = RequestMethod.POST)
@@ -325,22 +328,22 @@ public class APIController {
 	
 	@RequestMapping(value = "/purchaseHistory",method=RequestMethod.POST)
 	public PurchaseHistory purchaseHistory(
-			@RequestParam Integer commmodity_Id,
-			@RequestParam int commodityPrice,
+			@RequestParam int commodity_Id,
 			@RequestParam int buyNumber,
 			@RequestParam int totalPrice,
 			HttpServletRequest request){
 		User currentuser = getCurrentUser(request);
+		Commodity commodity = commodityService.findOne(commodity_Id);
 		PurchaseHistory purchaseHistory = new PurchaseHistory();
 		purchaseHistory.setUser(currentuser);
+		purchaseHistory.setCommodity(commodity);
 		purchaseHistory.setBuyNumber(buyNumber);
-		purchaseHistory.setCommodityPrice(commodityPrice);
 		purchaseHistory.setTotalPrice(totalPrice);
-		purchaseHistory.setCommodity_Id(commmodity_Id);
 		
 		return purchaseHService.save(purchaseHistory);
 	}
 	
+<<<<<<< HEAD
 	//分类
 	
 	@RequestMapping("/type/{type}/{page}")
@@ -359,4 +362,10 @@ public class APIController {
 	}
 
 	
+=======
+	@RequestMapping("/purchaseOrder")
+	public Page<PurchaseHistory> getOrder(){
+		return purchaseHService.getOrderFeeds(0);
+	}
+>>>>>>> branch 'master' of https://github.com/DGUT-Asiasoft-2013/server_wuwuwu.git
 }
