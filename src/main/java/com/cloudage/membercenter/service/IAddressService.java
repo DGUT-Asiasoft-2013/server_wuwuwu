@@ -1,12 +1,17 @@
 package com.cloudage.membercenter.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 
 import com.cloudage.membercenter.entity.Address;
+import com.cloudage.membercenter.entity.User;
 
 public interface IAddressService {
 	Address save(Address address);
-	Page<Address> findByUserId(int user_id,int page);
+	List<Address> findByUser(User user);
+	List<Address> findByUserId(Integer userId);
+
 
 }

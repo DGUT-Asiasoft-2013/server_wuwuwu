@@ -359,25 +359,28 @@ public class APIController {
 
 	@RequestMapping(value = "/address",method=RequestMethod.POST)
 	public Address address(
-			@RequestParam String address_name,
-			@RequestParam String address_telephone,
-			@RequestParam String address,
+			@RequestParam String AddName,
+			@RequestParam String AddTelephone,
+			@RequestParam String AddAddress,
 			HttpServletRequest request){
 		User currentuser = getCurrentUser(request);
 		Address newaddress = new Address();
 		newaddress.setUser(currentuser);
-		newaddress.setAddress_name(address_name);
-		newaddress.setAddress_telephone(address_telephone);
-		newaddress.setAddress(address);
-
-
+		newaddress.setAddress_name(AddName);
+		newaddress.setAddress_telephone(AddTelephone);
+		newaddress.setAddress(AddAddress);
 		return addressService.save(newaddress);
 	}
 
-	@RequestMapping(value="/address/{userId}")
-	public Page<Address> getAddressByUserID(@PathVariable Integer user_id,Integer page){
-		return addressService.findByUserId(user_id, page);
+	@RequestMapping(value="/addresslist")
+	public List<Address> getAddressByUserID(
+			HttpServletRequest request){
+		HttpSession session = request.getSession(true);
+		Integer uid = (Integer) session.getAttribute("uid");
+		return addressService.findByUserId(uid);
 	}
+
+
 
 
 

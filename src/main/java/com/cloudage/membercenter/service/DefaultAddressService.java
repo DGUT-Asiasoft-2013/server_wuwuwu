@@ -1,5 +1,7 @@
 package com.cloudage.membercenter.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cloudage.membercenter.entity.Address;
+import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.IAddressRepository;
 
 @Component
@@ -28,10 +31,23 @@ public class DefaultAddressService implements IAddressService{
 
 
 	@Override
-	public Page<Address> findByUserId(int user_id, int page) {
-		Sort sort = new Sort(Sort.Direction.DESC, "address");
-		PageRequest pageReqeust = new PageRequest(page, 10, sort);
-		return addressRepo.findByUserId(user_id, pageReqeust);
+	public List<Address> findByUser(User user) {
+		// TODO Auto-generated method stub
+		return addressRepo.findByUser(user);
 	}
+
+
+
+	@Override
+	public List<Address> findByUserId(Integer userId) {
+		// TODO Auto-generated method stub
+		return addressRepo.findByUserId(userId);
+	}
+
+
+
+
+
+
 
 }
