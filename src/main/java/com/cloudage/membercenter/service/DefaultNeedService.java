@@ -27,7 +27,7 @@ public class DefaultNeedService implements INeedService{
 	@Override
 	public Page<Need> searchNeedWithKeyword(String keyword, int page) {
 		Sort sort;
-		sort = new Sort(Direction.DESC,"createDate");
+		sort = new Sort(Direction.ASC,"endDate");
 
 		PageRequest pageRequest = new PageRequest(page, 10, sort);
 		return needRepo.searchNeedWithKeyword(keyword, pageRequest);
@@ -64,7 +64,7 @@ public class DefaultNeedService implements INeedService{
 	@Override
 	public Page<Need> getNeeds(int page) {
 		// TODO Auto-generated method stub
-		Sort sort = new Sort(Direction.DESC, "createDate");
+		Sort sort = new Sort(Direction.ASC, "endDate");
 		PageRequest pageRequest = new PageRequest(page, 10, sort);
 		return needRepo.findAll(pageRequest);
 	}

@@ -1,6 +1,8 @@
 package com.cloudage.membercenter.controller;
 
 import java.io.File;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -293,12 +295,17 @@ public class APICollectAndSearchController {
 		public Need addNeed(
 				@RequestParam String title,
 				@RequestParam String content,
+				@RequestParam int day,
 				HttpServletRequest request){
 			User currentUser = getCurrentUser(request);
 			Need need = new Need();
 			need.setUser(currentUser);
 			need.setTitle(title);
 			need.setContent(content);
+			Calendar c = new GregorianCalendar();
+			c.getInstance();
+			c.add(c.DATE, day);
+			need.setEndDate(c.getTime());
 			return needService.save(need);
 		}
 
