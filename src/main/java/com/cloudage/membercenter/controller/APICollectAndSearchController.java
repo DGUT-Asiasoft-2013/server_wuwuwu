@@ -2,6 +2,7 @@ package com.cloudage.membercenter.controller;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -308,7 +309,8 @@ public class APICollectAndSearchController {
 		}
 
 		@RequestMapping("/needs/{page}")
-		public Page<Need> getNeeds(@PathVariable int page){
+		public Page<Need> getNeeds(
+				@PathVariable int page){
 			return needService.getNeeds(page);
 		}
 

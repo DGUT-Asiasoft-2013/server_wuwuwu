@@ -1,5 +1,6 @@
 package com.cloudage.membercenter.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +65,10 @@ public class DefaultNeedService implements INeedService{
 	@Override
 	public Page<Need> getNeeds(int page) {
 		// TODO Auto-generated method stub
+		Date date = new Date();
 		Sort sort = new Sort(Direction.ASC, "endDate");
 		PageRequest pageRequest = new PageRequest(page, 10, sort);
-		return needRepo.findAll(pageRequest);
+		return needRepo.findNeedList(date,pageRequest);
 	}
 
 
