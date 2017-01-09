@@ -1,11 +1,13 @@
 package com.cloudage.membercenter.controller;
 
+import com.cloudage.membercenter.entity.Address;
 import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Collections;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.Commodity;
 import com.cloudage.membercenter.entity.PurchaseHistory;
 import com.cloudage.membercenter.entity.User;
+import com.cloudage.membercenter.service.IAddressService;
 import com.cloudage.membercenter.service.IArticleService;
 import com.cloudage.membercenter.service.ICollectionsService;
 import com.cloudage.membercenter.service.ICommentService;
@@ -16,6 +18,7 @@ import com.cloudage.membercenter.service.IUserService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,9 +50,12 @@ public class APIController {
 
 	@Autowired
 	ILikesService likesService;
-	
+
 	@Autowired
 	IPurchaseHistoryService purchaseHService;
+
+	@Autowired
+	IAddressService addressService;
 
 
 	@RequestMapping(value = "/hello", method=RequestMethod.GET)
@@ -63,7 +69,7 @@ public class APIController {
 			@RequestParam String passwordHash,
 			@RequestParam String telephone,
 			@RequestParam String nickname,
-			@RequestParam String address,
+			@RequestParam Address address,
 			@RequestParam Integer money,
 			MultipartFile avatar,
 			HttpServletRequest request){
@@ -73,7 +79,6 @@ public class APIController {
 		user.setPasswordHash(passwordHash);
 		user.setTelephone(telephone);
 		user.setNickname(nickname);
-		user.setAddress(address);
 		user.setMoney(money);
 
 
@@ -233,10 +238,13 @@ public class APIController {
 
 
 
-    @RequestMapping(value = "/commodity/pictures",method = RequestMethod.GET)
-    public List<Commodity> getCommodityPictures(){
-    	return commodityService.getCommodityPictures();
-    }
+
+
+	@RequestMapping(value = "/commodity/pictures",method = RequestMethod.GET)
+	public List<Commodity> getCommodityPictures(){
+		return commodityService.getCommodityPictures();
+	}
+
 
 
 	@RequestMapping(value="/commodity/{commodity_id}/collect",method = RequestMethod.POST)
@@ -324,7 +332,10 @@ public class APIController {
 	public Page<Commodity> getHomes(){
 		return getHome(0);
 	}
-	
+
+
+
+
 	@RequestMapping(value = "/purchaseHistory",method=RequestMethod.POST)
 	public PurchaseHistory purchaseHistory(
 			@RequestParam int commodity_Id,
@@ -338,10 +349,59 @@ public class APIController {
 		purchaseHistory.setCommodity(commodity);
 		purchaseHistory.setBuyNumber(buyNumber);
 		purchaseHistory.setTotalPrice(totalPrice);
-		
+
+
+
+
 		return purchaseHService.save(purchaseHistory);
 	}
-	
+
+
+	@RequestMapping(value = "/address",method=RequestMethod.POST)
+	public Address address(
+			@RequestParam String AddName,
+			@RequestParam String AddTelephone,
+			@RequestParam String AddAddress,
+			HttpServletRequest request){
+		User currentuser = getCurrentUser(request);
+		Address newaddress = new Address();
+		newaddress.setUser(currentuser);
+		newaddress.setAddress_name(AddName);
+		newaddress.setAddress_telephone(AddTelephone);
+		newaddress.setAddress(AddAddress);
+		return addressService.save(newaddress);
+	}
+
+	@RequestMapping(value="/addresslist")
+	public List<Address> getAddressByUserID(
+			HttpServletRequest request){
+		HttpSession session = request.getSession(true);
+		Integer uid = (Integer) session.getAttribute("uid");
+		return addressService.findByUserId(uid);
+	}
+
+
+
+
+
+	//分类
+
+	@RequestMapping("/type/{type}/{page}")
+	public Page<Commodity> getType(
+			@PathVariable String type,
+			@PathVariable int page
+			){
+		return commodityService.findBook(type, page);
+	}
+
+	@RequestMapping("/type/{type}")
+	public Page<Commodity> getBooks(
+			@PathVariable String type
+			){
+		return getType(type,0);
+	}
+
+
 	@RequestMapping("/purchaseOrder")
 	public Page<PurchaseHistory> getOrder(){
 		return purchaseHService.getOrderFeeds(0);

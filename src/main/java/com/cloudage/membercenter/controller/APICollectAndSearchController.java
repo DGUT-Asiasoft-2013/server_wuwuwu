@@ -48,8 +48,6 @@ public class APICollectAndSearchController {
 	@Autowired
 	ICollectionsService collectionsService;
 	
-	
-	
 
 	@Autowired
 	IArticleService articleService;

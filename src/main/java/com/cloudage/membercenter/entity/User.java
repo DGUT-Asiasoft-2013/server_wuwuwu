@@ -13,8 +13,8 @@ public class User extends BaseEntity{
 	String nickname;
 	String telephone;
 	String avatar;
-	String address;
 	Integer money;
+
 
 	@ColumnDefault("0")
 	//return money==null? 0 : money;
@@ -30,17 +30,17 @@ public class User extends BaseEntity{
 	public String getAccount() {
 		return account;
 	}
-	
+
 	@Column(nullable=false)//是否能为空
 	public String getPasswordHash() {
 		return passwordHash;
 	}
-	
+
 	@Column(unique=true)
 	public String getNickname() {
 		return nickname;
 	}
-	
+
 	@Column(nullable=true)
 	public String getAvatar() {
 		return avatar;
@@ -54,29 +54,25 @@ public class User extends BaseEntity{
 	public void setAccount(String account) {
 		this.account = account;
 	}
-	
+
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
 	}
-	
+
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	
+
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
-	
+
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-	
-	@Column(nullable=false)//是否能为空
-	public String getAddress() {
-		return address;
-	}
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+
+
+
+
 }
