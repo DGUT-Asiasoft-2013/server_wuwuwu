@@ -453,7 +453,10 @@ public class APIController {
 
 
 	@RequestMapping("/purchaseOrder")
-	public Page<PurchaseHistory> getOrder(){
-		return purchaseHService.getOrderFeeds(0);
+	public List<PurchaseHistory> getOrder(
+			HttpServletRequest request){
+		HttpSession session = request.getSession(true);
+		Integer uid = (Integer) session.getAttribute("uid");
+		return purchaseHService.findByUserId(uid);
 	}
 }
