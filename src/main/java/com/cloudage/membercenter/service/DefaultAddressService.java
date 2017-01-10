@@ -46,6 +46,30 @@ public class DefaultAddressService implements IAddressService{
 
 
 
+	@Override
+	public void deleteAddress(Integer id) {
+		// TODO Auto-generated method stub
+		addressRepo.delete(id);
+	}
+
+
+
+	@Override
+	public Address findDefaultOfUser(Integer userId) {
+		// TODO Auto-generated method stub
+		return addressRepo.findDefaultAddressOfUser(userId);
+	}
+
+
+
+	@Override
+	public Address findAddressByID(Integer addressId) {
+		// TODO Auto-generated method stub
+		return addressRepo.findOne(addressId);
+	}
+
+
+
 
 
 
