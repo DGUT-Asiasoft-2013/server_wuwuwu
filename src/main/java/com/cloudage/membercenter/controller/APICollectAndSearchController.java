@@ -42,13 +42,13 @@ public class APICollectAndSearchController {
 
 	@Autowired
 	IUserService userService;
-	
+
 	@Autowired
 	ICommodityService commodityService;
-	
+
 	@Autowired
 	ICollectionsService collectionsService;
-	
+
 
 	@Autowired
 	IArticleService articleService;
@@ -58,7 +58,7 @@ public class APICollectAndSearchController {
 
 	@Autowired
 	ILikesService likesService;
-	
+
 	@Autowired
 	INeedService needService;
 
@@ -197,7 +197,7 @@ public class APICollectAndSearchController {
 	public int countLikes(@PathVariable int article_id){
 		return likesService.countLikes(article_id);
 	}
-	
+
 	@RequestMapping("/article/{article_id}/isliked")
 	public boolean checkLiked(@PathVariable int article_id,HttpServletRequest request){
 		User me = getCurrentUser(request);
@@ -217,19 +217,19 @@ public class APICollectAndSearchController {
 			likesService.addLike(me, article);
 		else
 			likesService.removeLike(me, article);
-		
+
 		return likesService.countLikes(article_id);
 	}
 
-//	收藏数量
+	//	收藏数量
 	@RequestMapping("/commodity/{commodity_id}/collected")
 	public int countCollections(
 			@PathVariable int commodity_id){
 		return collectionsService.countCollections(commodity_id);
 	}
-	
-	
-//	是否已收藏
+
+
+	//	是否已收藏
 	@RequestMapping("/commodity/{commodity_id}/iscollected")
 	public boolean checkCollected(
 			@PathVariable int commodity_id,
@@ -237,20 +237,20 @@ public class APICollectAndSearchController {
 		User me = getCurrentUser(request);
 		return collectionsService.checkCollectioned(me.getId(), commodity_id);
 	}
-	
-	
-	
-//搜索
+
+
+
+	//搜索
 	@RequestMapping("commodity/s/{keyword}/{howsort}")
-	 	public Page<Commodity> searchCommodtyWithKeyword(
-	 			@PathVariable String keyword,
-	 			@PathVariable String howsort,
-	 			@RequestParam(defaultValue = "0") int page
-	 			
-	 			){
-	 		return commodityService.searchCommodtyWithKeyword(keyword,page,howsort);
-	 	}
-//	收藏
+	public Page<Commodity> searchCommodtyWithKeyword(
+			@PathVariable String keyword,
+			@PathVariable String howsort,
+			@RequestParam(defaultValue = "0") int page
+
+			){
+		return commodityService.searchCommodtyWithKeyword(keyword,page,howsort);
+	}
+	//	收藏
 	@RequestMapping(value="/commodity/{commodity_id}/collect",method = RequestMethod.POST)
 	public int changeCollects(
 			@PathVariable int commodity_id,
@@ -264,59 +264,102 @@ public class APICollectAndSearchController {
 			collectionsService.addCollection(me, commodity);
 		else
 			collectionsService.removeCollection(me, commodity);
-		
+
 		return collectionsService.countCollections(commodity_id);
 	}
-	
+
 	@RequestMapping(value="/collections")
-	 	public Page<Collections> getMyComments(
-	 			HttpServletRequest request
-	 			){
-	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),0);
+	public Page<Collections> getMyComments(
+			HttpServletRequest request
+			){
+		return collectionsService.getMyCollections(getCurrentUser(request).getId(),0);
 
-	 	}
-	 	
-	 	@RequestMapping(value="/collections/{page}")
-	 	public Page<Collections> getMycollections(
-	 			@PathVariable int page,
-	 			HttpServletRequest request
-	 			){
-	 		return collectionsService.getMyCollections(getCurrentUser(request).getId(),page);
-	 	}
-	 	
-//	 	需求
-		@RequestMapping(value="/need/{userId}")
-		public List<Need> getNeedsByUserID(@PathVariable Integer userId){
-			return needService.findAllByUserId(userId);
-		}
+	}
 
-		@RequestMapping(value="/need",method=RequestMethod.POST)
-		public Need addNeed(
-				@RequestParam String title,
-				@RequestParam String content,
-				@RequestParam int day,
-				HttpServletRequest request){
-			User currentUser = getCurrentUser(request);
-			Need need = new Need();
-			need.setUser(currentUser);
-			need.setTitle(title);
-			need.setContent(content);
-			Calendar c = new GregorianCalendar();
-			c.getInstance();
-			c.add(c.DATE, day);
-			need.setEndDate(c.getTime());
-			return needService.save(need);
-		}
+	@RequestMapping(value="/collections/{page}")
+	public Page<Collections> getMycollections(
+			@PathVariable int page,
+			HttpServletRequest request
+			){
+		return collectionsService.getMyCollections(getCurrentUser(request).getId(),page);
+	}
 
-		@RequestMapping("/needs/{page}")
-		public Page<Need> getNeeds(
-				@PathVariable int page){
-			return needService.getNeeds(page);
-		}
+	//	 	需求
+	@RequestMapping(value="/need/{userId}")
+	public List<Need> getNeedsByUserID(@PathVariable Integer userId){
+		return needService.findAllByUserId(userId);
+	}
 
-		@RequestMapping("/needs")
-		public Page<Need> getNeeds(){
-			return getNeeds(0);
-		}
+	@RequestMapping(value="/need",method=RequestMethod.POST)
+	public Need addNeed(
+			@RequestParam String title,
+			@RequestParam String content,
+			@RequestParam int day,
+			HttpServletRequest request){
+		User currentUser = getCurrentUser(request);
+		Need need = new Need();
+		need.setUser(currentUser);
+		need.setTitle(title);
+		need.setContent(content);
+		Calendar c = new GregorianCalendar();
+		c.getInstance();
+		c.add(c.DATE, day);
+		need.setEndDate(c.getTime());
+		return needService.save(need);
+	}
 
+	@RequestMapping("/needs/{page}")
+	public Page<Need> getNeeds(
+			@PathVariable int page){
+		return needService.getNeeds(page);
+	}
+
+	@RequestMapping("/needs")
+	public Page<Need> getNeeds(){
+		return getNeeds(0);
+	}
+
+	//		Need状态:0-发布中；1-过期；2-完成
+	@RequestMapping(value="/need/state", method=RequestMethod.POST)
+	public int changeNeedState(
+			@RequestParam int need_id,
+			@RequestParam int state
+			){
+		Need need = needService.findOne(need_id);
+		need.setState(state);;
+		needService.save(need);
+		return need.getState();
+	}
+	
+	@RequestMapping(value="/need/edit", method=RequestMethod.POST)
+	public Need changeNeed(
+			@RequestParam int need_id,
+			@RequestParam String title,
+			@RequestParam String content,
+			@RequestParam int day
+			){
+		Need need = needService.findOne(need_id);
+		need.setTitle(title);
+		need.setContent(content);
+		Calendar c = new GregorianCalendar();
+		c.getInstance();
+		c.add(c.DATE, day);
+		need.setEndDate(c.getTime());
+		needService.save(need);
+		return needService.save(need);
+	}
+	
+	@RequestMapping(value="/need/del", method=RequestMethod.POST)
+	public void delNeed(
+			@RequestParam int need_id
+			){
+		needService.delOne(need_id);
+	}
+	
+	@RequestMapping(value="/need/findOne", method=RequestMethod.POST)
+	public Need findOneNeed(
+			@RequestParam int need_id
+			){
+		return needService.findOne(need_id);
+	}
 }

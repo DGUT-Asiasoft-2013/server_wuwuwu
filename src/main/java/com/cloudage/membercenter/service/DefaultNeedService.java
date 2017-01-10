@@ -39,6 +39,11 @@ public class DefaultNeedService implements INeedService{
 	public Need findOne(int need_id) {
 		return needRepo.findOne(need_id);
 	}
+	
+	@Override
+	public void delOne(int need_id) {
+		needRepo.delete(need_id);
+	}
 
 
 	@Override
@@ -70,9 +75,6 @@ public class DefaultNeedService implements INeedService{
 		PageRequest pageRequest = new PageRequest(page, 10, sort);
 		return needRepo.findNeedList(date,pageRequest);
 	}
-
-
-
 
 
 }
