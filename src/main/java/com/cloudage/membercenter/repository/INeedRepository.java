@@ -1,5 +1,6 @@
 package com.cloudage.membercenter.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -18,4 +19,7 @@ public interface INeedRepository extends PagingAndSortingRepository<Need, Intege
 	
 	@Query("from Need need where need.title like %?1%")
 	Page<Need> searchNeedWithKeyword(String keyword,Pageable page);
+	
+	@Query("from Need need where need.endDate >= ?1")
+	Page<Need> findNeedList(Date now,Pageable page);
 }
