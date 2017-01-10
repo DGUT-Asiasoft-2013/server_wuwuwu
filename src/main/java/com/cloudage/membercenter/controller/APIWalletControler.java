@@ -4,6 +4,7 @@ import com.cloudage.membercenter.entity.Commodity;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBillService;
 import com.cloudage.membercenter.service.ICommodityService;
+import com.cloudage.membercenter.service.IPurchaseHistoryService;
 import com.cloudage.membercenter.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,9 @@ public class APIWalletControler {
 
     @Autowired
     ICommodityService iCommodityService;
+    
+    @Autowired
+	IPurchaseHistoryService purchaseHService;
 
     @RequestMapping(value="/my_bill", method= RequestMethod.GET)
     public Page<Bill> getCurrentUser(HttpServletRequest request){
@@ -38,6 +42,7 @@ public class APIWalletControler {
     @RequestMapping(value = "/save_bill/{commodity_Id}")
     public Bill savebill(
             @PathVariable int commodity_Id,
+            @RequestParam Integer historyId,
             @RequestParam int buyNumber,
             @RequestParam int totalPrice,
             HttpServletRequest request){
@@ -52,6 +57,7 @@ public class APIWalletControler {
         bill.setUser(user);
         bill.setBuyNumber(buyNumber);
         bill.setTotalPrice(totalPrice);
+        purchaseHService.deletePurchaseHistory(historyId);
 
         return iBillService.save(bill);
     }

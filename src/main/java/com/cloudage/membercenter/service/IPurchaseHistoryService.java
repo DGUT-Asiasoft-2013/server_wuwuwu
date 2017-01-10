@@ -12,4 +12,5 @@ public interface IPurchaseHistoryService {
 
 	List<PurchaseHistory> findByUserId(Integer userId);
 	Page<PurchaseHistory> getOrderFeeds(int page);
+	void deletePurchaseHistory(Integer id);
 }

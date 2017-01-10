@@ -42,4 +42,12 @@ public class DefaultPurchaseHistoryService implements IPurchaseHistoryService{
 		return purchaseHRepo.findByUserId(userId);
 	}
 
+	@Override
+	public void deletePurchaseHistory(Integer id) {
+		
+		purchaseHRepo.delete(id);
+	}
+	
+	
+
 }
