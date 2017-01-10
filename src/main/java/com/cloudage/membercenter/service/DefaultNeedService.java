@@ -65,6 +65,15 @@ public class DefaultNeedService implements INeedService{
 		// TODO Auto-generated method stub
 		return needRepo.findAllByUserId(userId);
 	}
+	
+	@Override
+	public Page<Need> findMy(Integer userId,int page) {
+		// TODO Auto-generated method stub
+
+		Sort sort = new Sort(Direction.DESC, "endDate");
+		PageRequest pageRequest = new PageRequest(page, 10, sort);
+		return needRepo.findMy(userId,pageRequest);
+	}
 
 
 	@Override

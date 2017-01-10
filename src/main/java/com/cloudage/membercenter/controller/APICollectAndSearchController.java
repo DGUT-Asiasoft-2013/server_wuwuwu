@@ -289,6 +289,22 @@ public class APICollectAndSearchController {
 	public List<Need> getNeedsByUserID(@PathVariable Integer userId){
 		return needService.findAllByUserId(userId);
 	}
+	
+	@RequestMapping(value="/need/my/{page}", method=RequestMethod.GET)
+	public Page<Need> getMyNeed(
+			@PathVariable int page,
+			HttpServletRequest request){
+		User currentUser = getCurrentUser(request);
+		return needService.findMy(currentUser.getId(),page);
+	}
+	
+	@RequestMapping(value="/need/my", method=RequestMethod.GET)
+	public Page<Need> getMyNeed(
+			HttpServletRequest request){
+		User currentUser = getCurrentUser(request);
+		return needService.findMy(currentUser.getId(),0);
+	}
+	
 
 	@RequestMapping(value="/need",method=RequestMethod.POST)
 	public Need addNeed(

@@ -23,6 +23,7 @@ public interface INeedService {
 	Need save(Need need);
 	Page<Need> getNeeds(int page);
 	void delOne(int need_id);
+	Page<Need> findMy(Integer id,int page);
 	
 
 

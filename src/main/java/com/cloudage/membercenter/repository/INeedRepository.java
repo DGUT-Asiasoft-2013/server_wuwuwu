@@ -17,6 +17,9 @@ public interface INeedRepository extends PagingAndSortingRepository<Need, Intege
 	@Query("from Need need where need.user.id = ?1")
 	List<Need> findAllByUserId(Integer userId);
 	
+	@Query("from Need need where need.user.id = ?1")
+	Page<Need> findMy(Integer userId,Pageable page);
+	
 	@Query("from Need need where need.title like %?1%")
 	Page<Need> searchNeedWithKeyword(String keyword,Pageable page);
 	
