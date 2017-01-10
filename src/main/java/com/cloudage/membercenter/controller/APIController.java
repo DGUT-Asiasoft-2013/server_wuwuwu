@@ -355,6 +355,7 @@ public class APIController {
 		return purchaseHService.save(purchaseHistory);
 	}
 
+	//地址
 
 	@RequestMapping(value = "/address",method=RequestMethod.POST)
 	public Address address(
@@ -370,7 +371,7 @@ public class APIController {
 		newaddress.setAddress(AddAddress);
 		return addressService.save(newaddress);
 	}
-
+	//返回当前用户包村的所有地址
 	@RequestMapping(value="/addresslist")
 	public List<Address> getAddressByUserID(
 			HttpServletRequest request){
@@ -379,8 +380,58 @@ public class APIController {
 		return addressService.findByUserId(uid);
 	}
 
+	@RequestMapping(value= "/address/delete/{id}")
+	public void deleteAddress(@PathVariable int id){
+		addressService.deleteAddress(id);
+	}
 
+	// 设置默认地址
+	@RequestMapping("/address/setdefault/{addressId}")
+	public Address setDefault(
+			@PathVariable int addressId, 
+			HttpServletRequest request) {
+		HttpSession session = request.getSession(true);
+		Integer uid = (Integer) session.getAttribute("uid");
+		Address beforeAddress = addressService.findDefaultOfUser(uid);
+		Address newAddress = addressService.findAddressByID(addressId);
+		if(beforeAddress != null) {
+			beforeAddress.setDefaultInfo(false);
+			addressService.save(beforeAddress);
+		}
+		newAddress.setDefaultInfo(true);
+		addressService.save(newAddress);
+		return newAddress;
+	}
 
+	// 返回当前用户的默认收货地址
+	@RequestMapping(value="/address/default")
+	public Address getDefaultCommomInfoOfUser(
+			HttpServletRequest request) {
+		HttpSession session = request.getSession(true);
+		Integer uid = (Integer) session.getAttribute("uid");
+		return addressService.findDefaultOfUser(uid);
+	}
+
+	@RequestMapping(value="/address/change/{addressId}", method=RequestMethod.POST)
+	public boolean changeAddress(
+			@PathVariable int addressId,
+			@RequestParam String name,
+			@RequestParam String telephone,
+			@RequestParam String address,
+			HttpServletRequest request){
+
+		Address newAddress = addressService.findAddressByID(addressId);
+
+		if(newAddress==null){
+			return false;
+		}else{
+			newAddress.setAddress_name(name);
+			newAddress.setAddress_telephone(telephone);
+			newAddress.setAddress(address);
+			addressService.save(newAddress);
+			return true;
+		}
+	}
 
 
 	//分类

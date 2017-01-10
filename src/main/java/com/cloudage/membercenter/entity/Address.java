@@ -12,6 +12,7 @@ public class Address extends BaseEntity{
 	String address_name;
 	String address_telephone;
 	String address;
+	boolean isDefaultInfo;
 
 
 	@ManyToOne(optional=false)
@@ -40,5 +41,12 @@ public class Address extends BaseEntity{
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public boolean isDefaultInfo() {
+		return isDefaultInfo;
+	}
+	public void setDefaultInfo(boolean isDefaultInfo) {
+		this.isDefaultInfo = isDefaultInfo;
+	}
+	
 
 }

@@ -18,5 +18,8 @@ public interface IAddressRepository extends PagingAndSortingRepository<Address,I
 	@Query("from Address address where address.user.id=?1")
 	List<Address> findByUserId(Integer userId);
 
+	@Query("from Address address where address.user.id=?1 and address.defaultInfo=1")
+	Address findDefaultAddressOfUser(Integer userId);
+
 
 }
