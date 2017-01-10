@@ -317,6 +317,7 @@ public class APICollectAndSearchController {
 		need.setUser(currentUser);
 		need.setTitle(title);
 		need.setContent(content);
+		need.setState(0);
 		Calendar c = new GregorianCalendar();
 		c.getInstance();
 		c.add(c.DATE, day);
